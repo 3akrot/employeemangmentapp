@@ -14,10 +14,10 @@
          <children>
             <AnchorPane prefHeight="400.0" prefWidth="300.0" styleClass="left-form" stylesheets="@login.css">
                <children>
-                  <FontAwesomeIcon fill="#fff7f7" glyphName="CAR" layoutX="95.0" layoutY="168.0" size="8em" />
-                  <Label layoutX="48.0" layoutY="183.0" text="Car Agency System" textFill="#f8f8f8">
+                  <FontAwesomeIcon fill="#fff7f7" glyphName="USERS" layoutX="95.0" layoutY="168.0" size="8em" />
+                  <Label layoutX="29.0" layoutY="200.0" prefHeight="35.0" prefWidth="234.0" text="Employee mangment System" textAlignment="CENTER" textFill="#f8f8f8" wrapText="true">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
                </children></AnchorPane>
@@ -28,11 +28,13 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="username" layoutX="40.0" layoutY="150.0" prefHeight="30.0" prefWidth="220.0" promptText="username" styleClass="textfield" stylesheets="@login.css" />
-                  <TextField fx:id="password" layoutX="40.0" layoutY="200.0" prefHeight="30.0" prefWidth="220.0" promptText="password" styleClass="textfield" stylesheets="@login.css" />
-                  <Button fx:id="login" layoutX="40.0" layoutY="253.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="220.0" styleClass="login-btn" stylesheets="@login.css" text="Login" />
-                  <Button fx:id="close" layoutX="234.0" layoutY="14.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="48.0" styleClass="close" stylesheets="@login.css" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
-                  <FontAwesomeIcon glyphName="CLOSE" layoutX="265.0" layoutY="22.0" size="1.2em" text="" />
+                  <TextField fx:id="username" layoutX="40.0" layoutY="150.0" onAction="#adminlog" prefHeight="30.0" prefWidth="220.0" promptText="username" styleClass="textfield" stylesheets="@login.css" />
+                  <TextField fx:id="password" layoutX="40.0" layoutY="200.0" onAction="#adminlog" prefHeight="30.0" prefWidth="220.0" promptText="password" styleClass="textfield" stylesheets="@login.css" />
+                  <Button fx:id="login" layoutX="40.0" layoutY="253.0" mnemonicParsing="false" onAction="#adminlog" prefHeight="30.0" prefWidth="220.0" styleClass="login-btn" stylesheets="@login.css" text="Login" />
+                  <Button fx:id="close" layoutX="234.0" layoutY="14.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="48.0" styleClass="close" stylesheets="@login.css" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <graphic>
+                        <FontAwesomeIcon glyphName="CLOSE" size="1.2em" text="" />
+                     </graphic></Button>
                </children>
             </AnchorPane>
          </children>

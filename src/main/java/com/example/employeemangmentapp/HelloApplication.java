@@ -1,5 +1,6 @@
 package com.example.employeemangmentapp;
 
+import java.sql.Connection;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,8 @@ public class HelloApplication extends Application {
         root.setOnMousePressed((MouseEvent e) -> {
             x = e.getSceneX();
             y = e.getSceneY();
+
+
             //get مكان الماوس في السين
 
         });
@@ -45,9 +48,17 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
+
     }
 
     public static void main(String[] args) {
+        Connection connection = DataBaseConnection.getconncetion();
+        if ((connection == null)) {
+            System.out.println("failed");
+        } else {
+            System.out.println("Success");
+        }
         launch();
     }
 }
