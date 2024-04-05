@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeemangmentapp.HelloController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
             <AnchorPane prefHeight="400.0" prefWidth="300.0" styleClass="left-form" stylesheets="@login.css">
                <children>
@@ -28,10 +28,10 @@
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField layoutX="40.0" layoutY="150.0" prefHeight="30.0" prefWidth="220.0" promptText="username" styleClass="textfield" stylesheets="@login.css" />
-                  <TextField layoutX="40.0" layoutY="200.0" prefHeight="30.0" prefWidth="220.0" promptText="password" styleClass="textfield" stylesheets="@login.css" />
-                  <Button layoutX="40.0" layoutY="253.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="220.0" styleClass="login-btn" stylesheets="@login.css" text="Login" />
-                  <Button layoutX="234.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="48.0" styleClass="close" stylesheets="@login.css" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+                  <TextField fx:id="username" layoutX="40.0" layoutY="150.0" prefHeight="30.0" prefWidth="220.0" promptText="username" styleClass="textfield" stylesheets="@login.css" />
+                  <TextField fx:id="password" layoutX="40.0" layoutY="200.0" prefHeight="30.0" prefWidth="220.0" promptText="password" styleClass="textfield" stylesheets="@login.css" />
+                  <Button fx:id="login" layoutX="40.0" layoutY="253.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="220.0" styleClass="login-btn" stylesheets="@login.css" text="Login" />
+                  <Button fx:id="close" layoutX="234.0" layoutY="14.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="48.0" styleClass="close" stylesheets="@login.css" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                   <FontAwesomeIcon glyphName="CLOSE" layoutX="265.0" layoutY="22.0" size="1.2em" text="" />
                </children>
             </AnchorPane>
