@@ -2,7 +2,6 @@ package com.example.employeemangmentapp;
 
 import java.sql.Connection;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,7 +12,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 //
 
-public class HelloApplication extends Application {
+public class app extends Application {
     //will be needed to make stage draggable
     private double x = 0;
     private  double y = 0;
@@ -21,7 +20,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         //load the scenebuilder fxml file
-        Parent root =  FXMLLoader.load(getClass().getResource("hello-view.fxml"));
+        Parent root =  FXMLLoader.load(getClass().getResource("login.fxml"));
         root.setOnMousePressed((MouseEvent e) -> {
             x = e.getSceneX();
             y = e.getSceneY();

@@ -2,7 +2,6 @@ package com.example.employeemangmentapp;
 
 import java.sql.Connection;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,9 +17,8 @@ import javafx.stage.StageStyle;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
-public class HelloController {
+public class Logincontroller {
 
     @FXML
     private Button close;
@@ -40,9 +38,17 @@ public class HelloController {
 
     @FXML
     private TextField password;
+    @FXML
+    private AnchorPane signup;
 
     @FXML
     private TextField username;
+    @FXML
+    private TextField addpasswordfield;
+
+    @FXML
+    private TextField addusernamefield;
+
     //this method for closing the app
     public  void close(){
 
@@ -54,6 +60,59 @@ public class HelloController {
     ResultSet queryrs;
     private double x;
     private double y;
+    public void addAdmin(){
+        c = DataBaseConnection.getconncetion();
+        try {
+            //frist we want to make sure that there is no admin with the same username
+            ps = c.prepareStatement("SELECT * FROM admin WHERE username = ?");
+            ps.setString(1,addusernamefield.getText());
+            queryrs =  ps.executeQuery();
+            //if there is a admin with same usenam alert
+            if(queryrs.next()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setContentText("There is a user with the same username");
+                alert.setHeaderText(null);
+                alert.showAndWait();
+            }
+            //else we add the admin
+            else{
+                if(addusernamefield.getText().isEmpty() ||addpasswordfield.getText().isEmpty()){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Please Fill The Blank Fields");
+                    alert.showAndWait();
+                }
+                else {
+                    c = DataBaseConnection.getconncetion();
+                    ps = c.prepareStatement("INSERT INTO admin (username , password) VALUES (?,?)");
+                    ps.setString(1,addusernamefield.getText());
+                    ps.setString(2,addpasswordfield.getText());
+                    ps.executeUpdate();
+                    Alert a = new Alert(Alert.AlertType.INFORMATION);
+                    a.setTitle("Admin added");
+                    a.setHeaderText(null);
+                    a.setContentText("the user name " +addusernamefield.getText() + " was added to database" );
+                    a.showAndWait();
+                }
+
+
+            }
+        }
+        catch (Exception e){
+            System.out.println("error adding to database");
+            e.printStackTrace();
+        }
+    }
+    public void switchtoadd(){
+        main_form.setVisible(false);
+        signup.setVisible(true);
+    }
+    public void switchtologin(){
+        main_form.setVisible(true);
+        signup.setVisible(false);
+    }
 
 
     public void adminlog(){

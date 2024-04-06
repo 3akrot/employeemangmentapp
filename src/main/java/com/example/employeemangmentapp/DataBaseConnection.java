@@ -12,7 +12,7 @@ public class DataBaseConnection {
     static Connection connection;
     static Connection getconncetion()  {
         try{
-            connection = (Connection) DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+DBname,Username,pass);
+            connection =  DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+DBname,Username,pass);
         }
         catch (SQLException e){
             System.out.println("connection error");

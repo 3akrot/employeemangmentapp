@@ -17,16 +17,10 @@ public class dashboardcontroller {
     }
     @FXML
     private StackPane root;
-    public void onStageShown(Stage stage) {
-        // This method will be called when the stage is shown
-        // Change the content of the label here
-
-    }
 
     @FXML
     void on(){
         usernamelabel.setText(admin.username);
-        System.out.println(usernamelabel);
     }
 
 //    void on(ActionEvent event) {
