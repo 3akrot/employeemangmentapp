@@ -139,13 +139,18 @@ public class Logincontroller {
                     alert.setHeaderText(null);
                     alert.setContentText("Successfully login in");
                     alert.showAndWait();
-                    login.getScene().getWindow().hide();
-                    Parent root = FXMLLoader.load(getClass().getResource("dash.fxml"));
-                    Stage stage = new Stage();
+
+                    FXMLLoader loader = new FXMLLoader (getClass().getResource("dash.fxml"));
+                    Parent root = loader.load();
+                    dashboardcontroller dashcontroll = loader.getController();
+                    dashcontroll.updateusername(username.getText());
+                    System.out.println(dashcontroll);
+
+                    Stage stage = (Stage) login.getScene().getWindow();
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
 
-                    stage.initStyle(StageStyle.TRANSPARENT);
+
                     root.setOnMousePressed((MouseEvent e) -> {
                         x = e.getSceneX();
                         y = e.getSceneY();
@@ -164,7 +169,7 @@ public class Logincontroller {
                     root.setOnMouseReleased((MouseEvent e) ->{
                         stage.setOpacity(1);
                     } );
-
+                    app.centerstage(root);
                     stage.show();
 
                 }

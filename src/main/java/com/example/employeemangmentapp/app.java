@@ -3,9 +3,11 @@ package com.example.employeemangmentapp;
 import java.sql.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -41,16 +43,24 @@ public class app extends Application {
             stage.setOpacity(1);
         } );
         stage.initStyle(StageStyle.TRANSPARENT);
-
         Scene scene = new Scene(root, 600, 400);
-        stage.setTitle("Hello!");
+
+
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
 
 
     }
+    static  void centerstage(Parent root){
+        Stage stage =(Stage) root.getScene().getWindow();
+        Scene scene = root.getScene();
+        //this code makes stage appear in center
+        Rectangle2D Screenbound = Screen.getPrimary().getVisualBounds();
 
+        stage.setX((Screenbound.getWidth() / 2) - (scene.getWidth() / 2));
+        stage.setY((Screenbound.getHeight() / 2) - (scene.getHeight() / 2));
+    }
     public static void main(String[] args) {
         Connection connection = DataBaseConnection.getconncetion();
         if ((connection == null)) {
