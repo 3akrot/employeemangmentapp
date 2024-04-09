@@ -13,9 +13,10 @@ public class DataBaseConnection {
     static Connection getconncetion()  {
         try{
             connection =  DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+DBname,Username,pass);
+
         }
         catch (SQLException e){
-            System.out.println("connection error");
+            System.out.println("Connection Error");
             e.printStackTrace();
         }
 

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeemangmentapp.Logincontroller">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeemangmentapp.LoginController">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -70,6 +70,7 @@
                   </Button>
                   <ComboBox fx:id="dep" layoutX="67.0" layoutY="246.0" prefWidth="150.0" promptText="Choose Department" />
                   <Button fx:id="login11" layoutX="40.0" layoutY="327.0" mnemonicParsing="false" onAction="#switchtologin" prefHeight="30.0" prefWidth="220.0" styleClass="login-btn" stylesheets="@login.css" text="Back To Login" />
+                  <TextField fx:id="adminnameinp" layoutX="40.0" layoutY="104.0" prefHeight="30.0" prefWidth="220.0" promptText="Admin Name" />
                </children>
             </AnchorPane>
          </children>

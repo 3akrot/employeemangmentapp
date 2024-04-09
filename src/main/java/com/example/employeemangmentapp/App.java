@@ -1,6 +1,9 @@
 package com.example.employeemangmentapp;
 
 import java.sql.Connection;
+
+import animatefx.animation.Bounce;
+import animatefx.animation.FadeIn;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -14,7 +17,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 //
 
-public class app extends Application {
+public class App extends Application {
     //will be needed to make stage draggable
     private double x = 0;
     private  double y = 0;
@@ -26,26 +29,26 @@ public class app extends Application {
         root.setOnMousePressed((MouseEvent e) -> {
             x = e.getSceneX();
             y = e.getSceneY();
-
-
             //get مكان الماوس في السين
-
         });
+
         root.setOnMouseDragged((MouseEvent e) -> {
             //getScreen بتجيب مكان الماوس في الشاشه
+            //e.getScreen الهدف منها انها نجيب مكان الضغطه في الشاشه كلها
+            // الاكس و الواي الي بيطرح منه هنا هوا مكان الضغطه الي ضغطها في السين
+            // لما بطرح الاتنين كاني بيقي معايا الحافه بتاعت stage لما بعملها drag
             stage.setX(e.getScreenX() - x);
             stage.setY(e.getScreenY() - y);
             stage.setOpacity(0.7);
-            // خليه مكان الستيج = مكان الماوس في الشاشه ناقص مكان الماوس في السين
+            // خليه مكان stage = مكان الماوس في الشاشه ناقص مكان الماوس في السين
 
         });
         root.setOnMouseReleased((MouseEvent e) ->{
             stage.setOpacity(1);
         } );
+
         stage.initStyle(StageStyle.TRANSPARENT);
         Scene scene = new Scene(root, 600, 400);
-
-
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -55,18 +58,21 @@ public class app extends Application {
     static  void centerstage(Parent root){
         Stage stage =(Stage) root.getScene().getWindow();
         Scene scene = root.getScene();
-        //this code makes stage appear in center
+        //getPrimary بترجع متغير من نوع Screen بيمثل الشاشه الاساسيه
+        //getVisualBounds بترجع متغير من نوع Rectangle2D بيمثل الابعاد
+        //نحزن ابعاد الشاشه في متغير من نوع Rectangle2D
         Rectangle2D Screenbound = Screen.getPrimary().getVisualBounds();
-
+        //عشان نوسط الstage بالعرض هنحط المحور x يساوي عرض الشاشه علي 2 نطرح منها نص عرض السين
         stage.setX((Screenbound.getWidth() / 2) - (scene.getWidth() / 2));
+        //عشان نوسط الstage بالعرض هنحط المحور Y يساوي طول الشاشه علي 2 نطرح منها نص طول السين
         stage.setY((Screenbound.getHeight() / 2) - (scene.getHeight() / 2));
     }
     public static void main(String[] args) {
         Connection connection = DataBaseConnection.getconncetion();
         if ((connection == null)) {
-            System.out.println("failed");
+            System.out.println("No Connection");
         } else {
-            System.out.println("Success");
+            System.out.println("Connected");
         }
         launch();
     }
