@@ -10,10 +10,12 @@ public class ComboBoxLists {
     ObservableList<String> CyberSecuritypecialition = FXCollections.observableArrayList();
     ObservableList<String> WebDevlopmentpecialition = FXCollections.observableArrayList();
     ObservableList<String> SoftwareDevpecialition = FXCollections.observableArrayList();
+    ObservableList<String> Chartlist = FXCollections.observableArrayList();
 
 
-
-
+    public ObservableList<String> getChartlist() {
+        return Chartlist;
+    }
 
     public ComboBoxLists() {
         //Departments
@@ -21,9 +23,10 @@ public class ComboBoxLists {
         Departmentslist.add("Cyber Security");
         Departmentslist.add("Software Engineering");
         Departmentslist.add("Web Development");
+
         //vaction list
         Vactionlist.add("True");
-        Vactionlist.add("False");
+        Vactionlist.add("On Vaction");
         //CompyterScienceSpecializations
         CompyterScienceSpecialition.add("Artificial Intelligence");
         CompyterScienceSpecialition.add("Machine Learning");
@@ -45,6 +48,9 @@ public class ComboBoxLists {
         WebDevlopmentpecialition.add("Full Stack Web Development");
         WebDevlopmentpecialition.add("Web Design");
         WebDevlopmentpecialition.add("Responsive Web Development");
+        //chartlis
+        Chartlist.add("Employes By Their joining Date");
+        Chartlist.add("Salary of Specialization");
 
 
 
@@ -67,6 +73,7 @@ public class ComboBoxLists {
         else if(Department.equals("Software Engineering")){
             return SoftwareDevpecialition;
         }
+
         else {
             return WebDevlopmentpecialition;
         }

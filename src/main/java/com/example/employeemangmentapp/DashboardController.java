@@ -2,6 +2,7 @@ package com.example.employeemangmentapp;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -22,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -46,7 +49,7 @@ public class DashboardController implements Initializable {
     private TableColumn<Employee, String> addemplye_col_age;
 
     @FXML
-    private TableColumn<Employee, String> addemplye_col_rating;
+    private TableColumn<Employee, Double> addemplye_col_rating;
     @FXML
     private TableColumn<Employee, String>  addemplyeed_col_specl;
 
@@ -79,6 +82,10 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button addemplyeedl;
+    @FXML
+    private TableColumn<?, ?> rating_col_dep;
+
+
 
     @FXML
     private TextField addemplyeeexperience;
@@ -87,7 +94,7 @@ public class DashboardController implements Initializable {
     private ComboBox<?> addemplyeegender;
 
     @FXML
-    private TextField addemplyeeid;
+    private Label addemplyeeid;
 
     @FXML
     private AnchorPane addemplyeeimage;
@@ -121,6 +128,8 @@ public class DashboardController implements Initializable {
     private ComboBox<String> newaddempsepc;
     @FXML
     private BarChart<?, ?> homecahrt;
+    @FXML
+    private BarChart<?, ?> homecahrt1;
 
     @FXML
     private Label hometotalemployee;
@@ -140,20 +149,41 @@ public class DashboardController implements Initializable {
     @FXML
     private StackPane root;
 
+    //------------------------------------rating------------------------------------------------------
     @FXML
-    private TableColumn<?, ?> salary_div_col;
+    private TableColumn<?, ?> rating_col_id;
 
     @FXML
-    private TableColumn<?, ?> salary_id_col;
+    private Slider rateslider;
 
     @FXML
-    private TableColumn<?, ?> salary_name_col;
+    private TableColumn<?, ?> rating_col_active;
 
     @FXML
-    private TableColumn<?, ?> salary_rating_col;
+    private TableColumn<?, ?> rating_col_name;
 
     @FXML
-    private TableColumn<?, ?> salary_slary_col;
+    private TableColumn<?, ?> rating_col_ratetimes;
+
+    @FXML
+    private TableColumn<Employee, Double> rating_col_rating;
+    @FXML
+    private ComboBox<String> ratingactive;
+    @FXML
+    private Button ratingapply;
+
+    @FXML
+    private Label ratingid;
+
+    @FXML
+    private Label ratingname;
+
+    @FXML
+    private Label ratingrating;
+
+
+    @FXML
+    private TableView<Employee> ratingtable;
 
     @FXML
     private Button salaryclr;
@@ -187,7 +217,8 @@ public class DashboardController implements Initializable {
     private TableView<?> salarytable;
 
     @FXML
-    private Button salaryupdate;
+    private Label ratingshow;
+
 
     @FXML
     public Label usernamelabel;
@@ -197,6 +228,8 @@ public class DashboardController implements Initializable {
     private Button addemplyeebtn;
     @FXML
     private Button emplyeesalarybtn;
+    @FXML
+    private ComboBox<String> homecombo;
 
 
     @FXML
@@ -261,13 +294,13 @@ public class DashboardController implements Initializable {
     System.out.println(ps);
     while (queryres.next()){
         Employee employee;
-        employee =  new Employee(queryres.getInt("employeid"),
+        employee =  new Employee(queryres.getInt("id"),
                 queryres.getString("employename"),
                 queryres.getInt("age"),
                 queryres.getString("department"),
                 queryres.getDate("datemember"),
                 queryres.getInt("expyears"),
-                queryres.getInt("rating"),
+                queryres.getDouble("rating"),
                 queryres.getString("image"),
                 queryres.getInt("ratetimes"),
                 queryres.getDouble("salary"),
@@ -281,13 +314,74 @@ public class DashboardController implements Initializable {
     return listofemployees;
 
     }
+    FilteredList<Employee> filteredList;
 
-    private ObservableList<Employee> Employees;
+    @FXML
+    private void ontypesearchup() throws SQLException {
+        filteredList = new FilteredList<>(addEmployessdata());
 
-    private void showEmployessdata() throws SQLException {
-        Employees = addEmployessdata();
+
+        // addlistner method
+        // بستمحلك تعمل تراك لاي Property
+        // يعني تقدر تجيب اي value جديد حصل
+        // احنا هنا بنستعملها عشان نجيب الvalue بتاعت الtexefield علي طول
+        addemplyeesearch.textProperty().addListener(
+                //lamda ex
+                (obsevable , oldvalue, newvalu) -> {
+                    if(!newvalu.isEmpty()){
+                        //الشرط بتاه ال filtered list
+                        // بترجع الemployee في حاله ان اسم الموظف موجود فه مربع البحث
+                        filteredList.setPredicate(e -> {
+                            //لو الuser مش مختار يعرض Specialition معين هنفلتر بناء علي الاسم
+                            if(seacrhcombo.getSelectionModel().getSelectedItem().equals("All")){
+                                if(e.getName().toLowerCase().contains(newvalu.toLowerCase())){
+                                    return true;
+                                }
+                                // بترجع الemployee في حاله ان id الموظف موجود فه مربع البحث
+                                if(e.getId().toString().toLowerCase().contains(newvalu)){
+                                    return  true;
+                                }
+
+                            }
+                            //لو الuser  مختار يعرض Specialition معين هنفلتر بناء علي الاسم  id و Specialition
+
+                            else{
+                                return (e.getName().toLowerCase().contains(newvalu.toLowerCase()) && e.getSpecialition().equals(seacrhcombo.getSelectionModel().getSelectedItem())) ||
+                                        e.getId().toString().toLowerCase().contains(newvalu) && e.getSpecialition().equals(seacrhcombo.getSelectionModel().getSelectedItem()) ;
+                            }
+                            return false;
+
+
+                        });
+                        try {
+                            showEmployessdata(filteredList);
+                            showemployessonratingtable(filteredList);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    //لوالtextfield فاضي نعرض كل الموظفين من غير اي فلتره
+                    else {
+                        try {
+                            showEmployessdata(addEmployessdata());
+                            showemployessonratingtable(addEmployessdata());
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+
+
+                }
+        );
+        System.out.println(filteredList);
+
+
+    }
+
+    private void showEmployessdata( ObservableList<Employee> listtoshow) throws SQLException {
         addemplye_col_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
-        addemplye_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        addemplye_col_name.setCellValueFactory( new PropertyValueFactory<>( "name"));
         addemplye_col_age.setCellValueFactory(new PropertyValueFactory<>("age"));
         addemplye_col_div.setCellValueFactory(new PropertyValueFactory<>("div"));
         addemplye_col_datemember.setCellValueFactory(new PropertyValueFactory<>("datemem"));
@@ -297,14 +391,90 @@ public class DashboardController implements Initializable {
         addemplye_col_salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
         addemplye_col_active.setCellValueFactory(new PropertyValueFactory<>("active"));
         addemplyeed_col_specl.setCellValueFactory(new PropertyValueFactory<>("specialition"));
-        addemployeetable.setItems(Employees);
+        addemployeetable.setItems(listtoshow);
 
+    }
+    @FXML
+    private void update() throws SQLException {
+        connect = DataBaseConnection.getconncetion();
+        try {
+            if(
+                    addemplyeename.getText().isEmpty()||
+                    addemplyeeage.getText().isEmpty() ||
+                    addemplye_salary.getText().isEmpty()||
+                    addemplyeeexperience.getText().isEmpty()||
+                    addemplyeeexperience.getText().isEmpty()||
+                    newaddempsepc.getValue() == null
+            ){
+                //
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setTitle("Error");
+                a.setHeaderText(null);
+                a.setContentText("Please Fill All Fields");
+                a.showAndWait();
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("CONFIRMATION");
+                alert.setHeaderText(null);
+                alert.setContentText("update " + addemplyeeid.getText() + " ?");
+                Optional<ButtonType> ans = alert.showAndWait();
+                if (ans.get().equals(ButtonType.OK)){
+                    if(addemplyeimageview.getImage() == null) {
+                        ps = connect.prepareStatement("UPDATE employe SET employename = ? ,  age = ? ,  specialition = ? , expyears = ? ,  salary = ? WHERE id = ?");
+                        ps.setString(1,addemplyeename.getText());
+                        ps.setInt(2, Integer.parseInt(addemplyeeage.getText()));
+                        ps.setString(3,newaddempsepc.getValue());
+                        ps.setInt(4, Integer.parseInt(addemplyeeexperience.getText()));
+                        ps.setDouble(5, Double.parseDouble(addemplye_salary.getText()));
+                        ps.setInt(6,Integer.parseInt(addemplyeeid.getText()));
+                    }
+                    else{
+                        ps = connect.prepareStatement("UPDATE employe SET employename = ? ,  age = ? ,  specialition = ? , expyears = ? ,  salary = ? , image = ? WHERE id = ?");
+                        ps.setString(1,addemplyeename.getText());
+                        ps.setInt(2, Integer.parseInt(addemplyeeage.getText()));
+                        ps.setString(3,newaddempsepc.getValue());
+                        ps.setInt(4, Integer.parseInt(addemplyeeexperience.getText()));
+                        ps.setDouble(5, Double.parseDouble(addemplye_salary.getText()));
+                        ps.setInt(7,Integer.parseInt(addemplyeeid.getText()));
+                        ps.setString(6,addemplyeimageview.getImage().getUrl());
+                    }
+                    System.out.println(ps);
+                    ps.executeUpdate();
+                    showEmployessdata(addEmployessdata());
+                    //update filtered list to match the change
+                    filteredList = new FilteredList<>(addEmployessdata());
+                    //rest the search result
+                    if(!addemplyeesearch.getText().isEmpty()){
+                        char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
+                        addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
+                        addemplyeesearch.setText(addemplyeesearch.getText()+x);
+                    }
+
+                }
+
+
+            }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        dataonchart();
     }
 
     @FXML
     void searchfilter() throws SQLException {
-        addEmployessdata();
-        showEmployessdata();
+        showEmployessdata(addEmployessdata());
+        if(addotherdep.isSelected() && ! seacrhcombo.getSelectionModel().getSelectedItem().equals("All")){
+            addotherdep.fire();
+        }
+        if(!addemplyeesearch.getText().isEmpty()){
+            char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
+            addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
+            addemplyeesearch.setText(addemplyeesearch.getText()+x);
+        }
+
 
     }
 
@@ -324,6 +494,10 @@ public class DashboardController implements Initializable {
 
     @FXML
     void navtoadd(ActionEvent event) {
+        if(! addemplyeesearch.getText().isEmpty()){
+            addemplyeesearch.setText("");
+        }
+        addemplyeesearch.setVisible(true);
         salarypage.setVisible(false);
         hompage.setVisible(false);
         addpage.setVisible(true);
@@ -334,6 +508,10 @@ public class DashboardController implements Initializable {
 
     @FXML
     void navtohome(ActionEvent event) {
+        if(! addemplyeesearch.getText().isEmpty()){
+            addemplyeesearch.setText("");
+        }
+        addemplyeesearch.setVisible(false);
         salarypage.setVisible(false);
         addpage.setVisible(false);
         hompage.setVisible(true);
@@ -344,7 +522,25 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    void navtosalary(ActionEvent event) {
+    void navToRating(ActionEvent event) {
+        seacrhcombo.getSelectionModel().select("All");
+        if(addotherdep.isSelected()){
+            addotherdep.fire();
+        }
+        if(!addemplyeesearch.getText().isEmpty()) {
+            addemplyeesearch.setText("");
+        }
+            System.out.println("worked");
+            addemplyeesearch.setText("a");
+            addemplyeesearch.setText("");
+
+
+
+
+
+
+        seacrhcombo.getSelectionModel().select("All");
+        addemplyeesearch.setVisible(true);
         addpage.setVisible(false);
         hompage.setVisible(false);
         emplyeesalarybtn.setStyle("-fx-background-color:#3b7dd4;");
@@ -388,29 +584,29 @@ public class DashboardController implements Initializable {
 
         if (addotherdep.isSelected()){
             showallemp = true;
-            try {
-                addEmployessdata();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            if(!seacrhcombo.getSelectionModel().getSelectedItem().equals("All")){
+                seacrhcombo.getSelectionModel().select("All");
             }
+
             try {
-                showEmployessdata();
+                showEmployessdata(addEmployessdata());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
         else{
             showallemp = false;
+
             try {
-                addEmployessdata();
+                showEmployessdata(addEmployessdata());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            try {
-                showEmployessdata();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        }
+        if(!addemplyeesearch.getText().isEmpty()){
+            char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
+            addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
+            addemplyeesearch.setText(addemplyeesearch.getText()+x);
         }
     }
 
@@ -450,9 +646,11 @@ public class DashboardController implements Initializable {
 
         System.out.println(employee.getSpecialition());
 
-        if(employee.getImage().isEmpty()){
+        if(employee.getImage() == null || employee.getImage().isEmpty()){
+            addemplyeimageview.setImage(null);
             return;
         }
+        
         Image image = new Image(employee.getImage(),132,134,false,true);
         addemplyeimageview.setImage(image);
         System.out.println(employee.getImage());
@@ -467,13 +665,16 @@ public class DashboardController implements Initializable {
         addemplye_salary.setText("");
         addemplyeeexperience.setText("");
         newaddempsepc.setItems(new ComboBoxLists().getSpecialitionlist(Admin.div));
+        newaddempsepc.getSelectionModel().clearSelection();
         addemployedep.setText("");
+        addemplyeimageview.setImage(null);
+
         enablenodes();
 
     }
     @FXML void del() throws SQLException {
         connect = DataBaseConnection.getconncetion();
-        ps = connect.prepareStatement("DELETE FROM employe WHERE employeid = ?");
+        ps = connect.prepareStatement("DELETE FROM employe WHERE id = ?");
         ps.setInt(1,Integer.parseInt(addemplyeeid.getText()));
         Alert a  = new Alert(Alert.AlertType.CONFIRMATION);
         a.setTitle("CONFIRMATION");
@@ -483,12 +684,21 @@ public class DashboardController implements Initializable {
         if(ans.get() == ButtonType.OK){
             ps.executeUpdate();
             System.out.println(ps);
-            showEmployessdata();
+            filteredList = new FilteredList<>(addEmployessdata());
+            showEmployessdata(addEmployessdata());
+            if(!addemplyeesearch.getText().isEmpty()){
+                char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
+                addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
+                addemplyeesearch.setText(addemplyeesearch.getText()+x);
+            }
             Alert x  = new Alert(Alert.AlertType.INFORMATION);
             x.setTitle("INFORMATION");
             x.setHeaderText(null);
             x.setContentText(" Deleted " + addemplyeename.getText());
             x.showAndWait();
+            clr();
+            dataonchart();
+            displaymaincar();
 
         }
 
@@ -498,14 +708,12 @@ public class DashboardController implements Initializable {
     public void addEmployee() throws SQLException {
         java.util.Date date = new java.util.Date();
         java.sql.Date currentdate = new Date(date.getTime());
-        String sql = "INSERT INTO employe (id, employeid, employename, age, department, specialition , datemember, expyears, rating, image, ratetimes, salary, active) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 'True')";
-        if(addemplyeeid.getText().isEmpty()||
+        if(
                 addemplyeename.getText().isEmpty()||
                 addemplyeeage.getText().isEmpty() ||
                 addemplye_salary.getText().isEmpty()||
                 addemplyeeexperience.getText().isEmpty()||
-                addemplyeeexperience.getText().isEmpty()||
-                addemplyeimageview.getImage() == null ||
+                addemplyeeexperience.getText().isEmpty() ||
                 newaddempsepc.getValue() == null
         ){
             //
@@ -516,39 +724,54 @@ public class DashboardController implements Initializable {
             a.showAndWait();
         }
         else{
-
             connect = DataBaseConnection.getconncetion();
-            ps = connect.prepareStatement("SELECT * FROM employe WHERE employeid = ?");
-            ps.setInt(1, Integer.parseInt(addemplyeeid.getText()));
-            queryres = ps.executeQuery();
-            if(queryres.next()){
-                Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setTitle("Error");
-                a.setHeaderText(null);
-                a.setContentText("There is a employee with same id");
-                a.showAndWait();
-            }
-            else{
+            if(addemplyeimageview.getImage() != null)
+            {
+                String sql = "INSERT INTO employe (id, employename, age, department, specialition , datemember, expyears, rating, image, ratetimes, salary, active) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 'True')";
                 ps = connect.prepareStatement(sql);
-                ps.setInt(1,Integer.parseInt(addemplyeeid.getText()));
-                ps.setString(2,addemplyeename.getText());
-                ps.setInt(3,Integer.parseInt(addemplyeeage.getText()));
-                ps.setString(4, Admin.div);
-                ps.setString(5,newaddempsepc.getValue());
-                ps.setDate(6,currentdate);
-                ps.setInt(7, Integer.parseInt(addemplyeeexperience.getText()));
-                ps.setInt(8,0);
-                ps.setString(9,addemplyeimageview.getImage().getUrl());
-                ps.setDouble(10, Double.parseDouble(addemplye_salary.getText()));
-                ps.executeUpdate();
-                System.out.println(ps);
-                showEmployessdata();
-                Alert a = new Alert(Alert.AlertType.INFORMATION);
-                a.setTitle("INFORMATION");
-                a.setHeaderText(null);
-                a.setContentText("Successfully Added!");
-                a.showAndWait();
+                ps.setString(1,addemplyeename.getText());
+                ps.setInt(2,Integer.parseInt(addemplyeeage.getText()));
+                ps.setString(3, Admin.div);
+                ps.setString(4,newaddempsepc.getValue());
+                ps.setDate(5,currentdate);
+                ps.setInt(6, Integer.parseInt(addemplyeeexperience.getText()));
+                ps.setInt(7,0);
+                ps.setString(8,addemplyeimageview.getImage().getUrl());
+                ps.setDouble(9, Double.parseDouble(addemplye_salary.getText()));
             }
+            else {
+                String sql = "INSERT INTO employe (id, employename, age, department, specialition , datemember, expyears, rating,  ratetimes, salary, active) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, 0, ?, 'True')";
+                ps = connect.prepareStatement(sql);
+                ps.setString(1,addemplyeename.getText());
+                ps.setInt(2,Integer.parseInt(addemplyeeage.getText()));
+                ps.setString(3, Admin.div);
+                ps.setString(4,newaddempsepc.getValue());
+                ps.setDate(5,currentdate);
+                ps.setInt(6, Integer.parseInt(addemplyeeexperience.getText()));
+                ps.setInt(7,0);
+                ps.setDouble(8, Double.parseDouble(addemplye_salary.getText()));
+            }
+
+            ps.executeUpdate();
+            System.out.println(ps);
+
+            showEmployessdata(addEmployessdata());
+            //update filtered list to match the change
+            filteredList = new FilteredList<>(addEmployessdata());
+            //rest the search result
+            if(!addemplyeesearch.getText().isEmpty()){
+                char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
+                addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
+                addemplyeesearch.setText(addemplyeesearch.getText()+x);
+            }
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("INFORMATION");
+            a.setHeaderText(null);
+            a.setContentText("Successfully Added!");
+            a.showAndWait();
+            dataonchart();
+            displaymaincar();
+
 
 
 
@@ -587,26 +810,174 @@ public class DashboardController implements Initializable {
         addemplyeeadd.setDisable(false);
         warn.setVisible(false);
     }
+    //--------------------------------------this part is for Rating page---------------------------------------------------------------
+    public void showemployessonratingtable(ObservableList<Employee> listtoshow) throws SQLException {
 
+        //map tables cell
+        rating_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        rating_col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        rating_col_dep.setCellValueFactory(new PropertyValueFactory<>("div"));
+        rating_col_rating.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        rating_col_ratetimes.setCellValueFactory(new PropertyValueFactory<>("ratetime"));
+        rating_col_active.setCellValueFactory(new PropertyValueFactory<>("active"));
+        ratingtable.setItems(listtoshow);
+    }
+    @FXML
+    private void addemployeonselectratingtable(){
+        if(ratingtable.getSelectionModel().isEmpty()){
+            return;
+        }
+        Employee emp = ratingtable.getSelectionModel().getSelectedItem();
+        ratingid.setText(emp.getId().toString());
+        ratingname.setText(emp.getName());
+        ratingrating.setText(emp.getRating().toString());
+        ratingactive.getSelectionModel().select(emp.getActive());
+    }
+    @FXML
+    private void apply() throws SQLException {
+    if(ratingid.getText().isEmpty()){
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        a.setTitle("ERROR");
+        a.setHeaderText(null);
+        a.setContentText("Please Select An Employee");
+        a.showAndWait();
+    }
+    connect = DataBaseConnection.getconncetion();
+    ps = connect.prepareStatement("UPDATE employe SET active = ? WHERE id = ? ");
+    ps.setString(1,ratingactive.getValue());
+    ps.setInt(2, Integer.parseInt(ratingid.getText()));
+    ps.executeUpdate();
+    // insert rating in ratings tables
+    ps = connect.prepareStatement("INSERT INTO ratings (employeeid , rating) VALUES (? , ?)");
+    ps.setInt(1, Integer.parseInt(ratingid.getText()));
+    ps.setDouble(2, Double.parseDouble(ratingshow.getText()));
+    ps.executeUpdate();
+    // get avg rating using a sql query from rating table
+    ps = connect.prepareStatement("SELECT employeeid , AVG(rating) AS averagerating FROM ratings WHERE employeeid = ? ");
+    ps.setInt(1, Integer.parseInt(ratingid.getText()));
+    queryres = ps.executeQuery();
+    queryres.next();
+    Double avgrate = queryres.getDouble("averagerating");
+    ps = connect.prepareStatement("SELECT * FROM employe WHERE id = ?");
+    ps.setInt(1, Integer.parseInt(ratingid.getText()));
+    queryres = ps.executeQuery();
+    queryres.next();
+    int ratetimes = queryres.getInt("ratetimes");
+
+    //finally insert it into employe rating colum
+        System.out.println(avgrate);
+    ps = connect.prepareStatement("UPDATE employe SET rating = ? ,  ratetimes = ? WHERE id = ? ");
+    ps.setDouble(1,avgrate);
+    ps.setInt(2,++ratetimes);
+    ps.setInt(3, Integer.parseInt(ratingid.getText()));
+    ps.executeUpdate();
+
+
+    showemployessonratingtable(addEmployessdata());
+    showEmployessdata(addEmployessdata());
+    displaymaincar();
+    ontypesearchup();
+        if(!addemplyeesearch.getText().isEmpty()){
+            char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
+            addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
+            addemplyeesearch.setText(addemplyeesearch.getText()+x);
+        }
+    }
+//----------------------------------------------Home--------------------------------------------------------------------------
+    @FXML
+    private void dataonchart() throws SQLException {
+        homecahrt.getData().clear();
+        homecahrt1.getData().clear();
+
+        connect = DataBaseConnection.getconncetion();
+            //SELECT datemember, COUNT(id) FROM employe GROUP BY datemember ORDER BY datemember ASC LIMIT 7;
+            //this query display the date and the total employes that joined and this date
+            //example
+            //datemember 	COUNT(id)
+            //2024-04-08 	135
+            //2024-04-09 	1
+            //2024-04-10 	2
+            //2024-04-11 	1
+            ps = connect.prepareStatement("SELECT datemember, COUNT(id) FROM employe WHERE department = ? GROUP BY datemember ORDER BY datemember ASC LIMIT 7; ");
+            ps.setString(1,Admin.div);
+            XYChart.Series chart1 = new XYChart.Series<>();
+            queryres = ps.executeQuery();
+            while (queryres.next()){
+                chart1.getData().add(new XYChart.Data(queryres.getString(1),queryres.getInt(2)));
+            }
+
+
+
+
+            ps = connect.prepareStatement("SELECT specialition , AVG(salary) FROM employe WHERE department = ? GROUP BY specialition");
+            ps.setString(1,Admin.div);
+            XYChart.Series chart2 = new XYChart.Series<>();
+            queryres = ps.executeQuery();
+            while (queryres.next()){
+                chart2.getData().add(new XYChart.Data(queryres.getString(1),queryres.getInt(2)));
+            }
+                homecahrt.getData().add(chart1);
+                homecahrt1.getData().add(chart2);
+
+            if(homecombo.getValue() == null ||  homecombo.getValue().equals("Employes By Their joining Date")){
+                homecahrt.setVisible(true);
+                homecahrt1.setVisible(false);
+
+            }
+            else {
+                homecahrt.setVisible(false);
+                homecahrt1.setVisible(true);
+            }
+
+
+
+    }
+    private void displaymaincar() throws SQLException {
+        connect = DataBaseConnection.getconncetion();
+        ps = connect.prepareStatement("SELECT COUNT(id) AS total FROM employe WHERE department = ?");
+        ps.setString(1,Admin.div);
+        queryres = ps.executeQuery();
+        queryres.next();
+        hometotalemployee.setText(String.valueOf(queryres.getInt("total")));
+        ps = connect.prepareStatement("SELECT COUNT(id) AS totalactive FROM employe WHERE active = 'True' and  department = ?");
+        ps.setString(1,Admin.div);
+        queryres = ps.executeQuery();
+        queryres.next();
+        int x =queryres.getInt("totalactive");
+        hometotalpresnts.setText(String.valueOf(queryres.getInt("totalactive")));
+        hometotalinactive.setText(String.valueOf(Integer.parseInt(hometotalemployee.getText()) - x));
+        homecombo.setItems(new ComboBoxLists().getChartlist());
+        homecombo.getSelectionModel().select("Employes By Their joining Date");
+
+
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        try {
+            ontypesearchup();
+            showemployessonratingtable(addEmployessdata());
+            displaymaincar();
+            dataonchart();
+            showEmployessdata(addEmployessdata());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        ratingactive.setItems(new ComboBoxLists().getVactionlist());
+        rateslider.valueProperty().addListener((obser,oldval,newval) -> {
+            ratingshow.setText(newval.toString());
+        });
+
         newaddempsepc.setItems(new ComboBoxLists().getSpecialitionlist(Admin.div));
         ObservableList<String> combolist = new ComboBoxLists().getSpecialitionlist(Admin.div);
         combolist.add("All");
         seacrhcombo.setItems(combolist);
-//        addemplyespecialition.setItems(new ComboBoxLists().getSpecialitionlist(Admin.div));
+        seacrhcombo.getSelectionModel().selectLast();
         homebtn.setStyle("-fx-background-color:#3b7dd4;");
         usernamelabel.setText(Admin.adminname);
         usernamelabel1.setText(Admin.div);
-        try {
-            addEmployessdata();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            showEmployessdata();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+
         }
 //        Timer timer = new Timer();
 //        Liveupdate  live = new Liveupdate();
@@ -633,4 +1004,4 @@ public class DashboardController implements Initializable {
 
 
 
-}
+

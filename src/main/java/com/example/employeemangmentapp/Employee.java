@@ -7,7 +7,7 @@ public class Employee {
     private String div;
     private Date datemem;
     private Integer exyears;
-    private Integer rating;
+    private Double rating;
     private Integer ratetime;
     String image;
     private String name;
@@ -50,7 +50,7 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Employee(Integer id, String name, Integer age, String div, Date datemem, Integer exyears, Integer rating, String image, Integer ratetime , Double salary , String active , String specialition) {
+    public Employee(Integer id, String name, Integer age, String div, Date datemem, Integer exyears, Double rating, String image, Integer ratetime , Double salary , String active , String specialition) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -115,11 +115,11 @@ public class Employee {
         this.exyears = exyears;
     }
 
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 

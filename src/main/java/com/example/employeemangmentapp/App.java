@@ -1,5 +1,6 @@
 package com.example.employeemangmentapp;
 
+import java.io.FileInputStream;
 import java.sql.Connection;
 
 import animatefx.animation.Bounce;
@@ -9,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -46,12 +48,15 @@ public class App extends Application {
         root.setOnMouseReleased((MouseEvent e) ->{
             stage.setOpacity(1);
         } );
-
+        FileInputStream file = new FileInputStream("G:\\sleeping dogs\\team.png");
+        Image image = new Image(file);
+        stage.getIcons().add(image);
         stage.initStyle(StageStyle.TRANSPARENT);
         Scene scene = new Scene(root, 600, 400);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
 
 
     }

@@ -4,6 +4,7 @@ module com.example.employeemangmentapp {
     requires java.sql;
     requires jdk.jdi;
     requires AnimateFX;
+    requires mysql.connector.j;
 
 
     opens com.example.employeemangmentapp to javafx.fxml;
