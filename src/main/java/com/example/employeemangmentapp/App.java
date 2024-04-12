@@ -3,8 +3,7 @@ package com.example.employeemangmentapp;
 import java.io.FileInputStream;
 import java.sql.Connection;
 
-import animatefx.animation.Bounce;
-import animatefx.animation.FadeIn;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -42,6 +41,7 @@ public class App extends Application {
             stage.setX(e.getScreenX() - x);
             stage.setY(e.getScreenY() - y);
             stage.setOpacity(0.7);
+
             // خليه مكان stage = مكان الماوس في الشاشه ناقص مكان الماوس في السين
 
         });
@@ -53,6 +53,7 @@ public class App extends Application {
         stage.getIcons().add(image);
         stage.initStyle(StageStyle.TRANSPARENT);
         Scene scene = new Scene(root, 600, 400);
+
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

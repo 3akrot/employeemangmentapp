@@ -1,8 +1,7 @@
 # Employee Management System
 
 ## Introduction
- AAST Project
- with javafx presented to dr/shady
+ Uni Project
  
 
 ## Features
@@ -12,6 +11,6 @@
 - ability to identify inactive and present employee and update salary to employees
 ## Technologies Used
 - javafx
-- sdbc driver to connect to database
+- jdbc driver to connect to database
 - mysql for database
 

@@ -3,9 +3,7 @@ package com.example.employeemangmentapp;
 import java.net.URL;
 import java.sql.Connection;
 
-import animatefx.animation.Bounce;
-import animatefx.animation.FadeIn;
-import animatefx.animation.FadeOut;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

@@ -1,5 +1,6 @@
 package com.example.employeemangmentapp;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -10,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -127,9 +129,11 @@ public class DashboardController implements Initializable {
     @FXML
     private ComboBox<String> newaddempsepc;
     @FXML
-    private BarChart<?, ?> homecahrt;
+    private LineChart<String, Integer> homecahrt;
     @FXML
     private BarChart<?, ?> homecahrt1;
+    @FXML
+    private BarChart<?, ?> homechart3;
 
     @FXML
     private Label hometotalemployee;
@@ -888,6 +892,8 @@ public class DashboardController implements Initializable {
     private void dataonchart() throws SQLException {
         homecahrt.getData().clear();
         homecahrt1.getData().clear();
+        homechart3.getData().clear();
+
 
         connect = DataBaseConnection.getconncetion();
             //SELECT datemember, COUNT(id) FROM employe GROUP BY datemember ORDER BY datemember ASC LIMIT 7;
@@ -898,41 +904,64 @@ public class DashboardController implements Initializable {
             //2024-04-09 	1
             //2024-04-10 	2
             //2024-04-11 	1
+            //chart
             ps = connect.prepareStatement("SELECT datemember, COUNT(id) FROM employe WHERE department = ? GROUP BY datemember ORDER BY datemember ASC LIMIT 7; ");
             ps.setString(1,Admin.div);
-            XYChart.Series chart1 = new XYChart.Series<>();
+            XYChart.Series chart1 = new XYChart.Series<String,Integer>();
             queryres = ps.executeQuery();
             while (queryres.next()){
                 chart1.getData().add(new XYChart.Data(queryres.getString(1),queryres.getInt(2)));
             }
 
-
-
-
+            //chart1
             ps = connect.prepareStatement("SELECT specialition , AVG(salary) FROM employe WHERE department = ? GROUP BY specialition");
             ps.setString(1,Admin.div);
-            XYChart.Series chart2 = new XYChart.Series<>();
+            XYChart.Series chart2 = new XYChart.Series<String,Number>();
             queryres = ps.executeQuery();
             while (queryres.next()){
                 chart2.getData().add(new XYChart.Data(queryres.getString(1),queryres.getInt(2)));
             }
+            //chart3
+            XYChart.Series chart3 = new XYChart.Series<String,Integer>();
+            ps = connect.prepareStatement("SELECT specialition , COUNT(id) AS empnumber FROM employe WHERE department = ? GROUP BY specialition");
+            ps.setString(1,Admin.div);
+            queryres = ps.executeQuery();
+            while (queryres.next()){
+                chart3.getData().add(new XYChart.Data<>(queryres.getString(1),queryres.getInt(2)));
+            }
+
+
+
+
+
+
                 homecahrt.getData().add(chart1);
                 homecahrt1.getData().add(chart2);
+                homechart3.getData().add(chart3);
 
-            if(homecombo.getValue() == null ||  homecombo.getValue().equals("Employes By Their joining Date")){
+            if( homecombo.getSelectionModel().getSelectedItem() == "Employes By Their joining Date"){
                 homecahrt.setVisible(true);
                 homecahrt1.setVisible(false);
+                homechart3.setVisible(false);
 
+            }
+            else if (homecombo.getSelectionModel().getSelectedItem() == "AVG Salary BY Specialization") {
+                homecahrt.setVisible(false);
+                homecahrt1.setVisible(true);
+                homechart3.setVisible(false);
             }
             else {
                 homecahrt.setVisible(false);
-                homecahrt1.setVisible(true);
+                homecahrt1.setVisible(false);
+                homechart3.setVisible(true);
             }
 
 
 
     }
     private void displaymaincar() throws SQLException {
+
+
         connect = DataBaseConnection.getconncetion();
         ps = connect.prepareStatement("SELECT COUNT(id) AS total FROM employe WHERE department = ?");
         ps.setString(1,Admin.div);
@@ -950,9 +979,17 @@ public class DashboardController implements Initializable {
         homecombo.getSelectionModel().select("Employes By Their joining Date");
 
 
+
+    }
+    @FXML
+    private void minimze(){
+      Stage stage = (Stage)homecahrt.getScene().getWindow();
+      stage.setIconified(true);
+
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
 
         try {
             ontypesearchup();

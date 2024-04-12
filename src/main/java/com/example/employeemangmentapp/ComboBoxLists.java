@@ -37,6 +37,7 @@ public class ComboBoxLists {
         CyberSecuritypecialition.add("Information Security");
         CyberSecuritypecialition.add("Management Cybersecurity");
         CyberSecuritypecialition.add("Analytics");
+        CyberSecuritypecialition.add("Malware analyst");
         //Software Enginering
         SoftwareDevpecialition.add("Mobile App Development");
         SoftwareDevpecialition.add("Game Development");
@@ -50,7 +51,8 @@ public class ComboBoxLists {
         WebDevlopmentpecialition.add("Responsive Web Development");
         //chartlis
         Chartlist.add("Employes By Their joining Date");
-        Chartlist.add("Salary of Specialization");
+        Chartlist.add("AVG Salary BY Specialization");
+        Chartlist.add("Number of Employees In Each Specialization");
 
 
 

@@ -5,6 +5,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -14,6 +15,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -39,26 +41,24 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Button layoutX="1037.0" layoutY="5.0" mnemonicParsing="false" onAction="#close" prefHeight="30.0" prefWidth="49.0" styleClass="close" stylesheets="@dash.css" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="5.0">
+                        <Button layoutX="1037.0" layoutY="1.0" mnemonicParsing="false" onAction="#close" prefHeight="38.0" prefWidth="57.0" styleClass="close" stylesheets="@dash.css" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
                            <graphic>
                               <FontAwesomeIcon glyphName="CLOSE" text="" />
                            </graphic>
                         </Button>
+                        <Button layoutX="1085.0" layoutY="2.0" mnemonicParsing="false" onAction="#minimze" prefHeight="38.0" prefWidth="57.0" styleClass="minimize" stylesheets="@dash.css" AnchorPane.rightAnchor="58.0">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="MINUS" />
+                           </graphic></Button>
                      </children>
                   </AnchorPane>
                </top>
                <left>
                   <AnchorPane prefHeight="545.0" prefWidth="228.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutY="57.0" prefHeight="545.0" prefWidth="228.0" styleClass="nav-form" stylesheets="@dash.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane layoutY="57.0" prefHeight="545.0" prefWidth="228.0" styleClass="primary-color" stylesheets="@dash.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <FontAwesomeIcon fill="#fffbfb" glyphName="USERS" layoutX="69.0" layoutY="117.0" size="7em" />
-                              <Label alignment="CENTER" layoutX="34.0" layoutY="140.0" prefHeight="17.0" prefWidth="161.0" text="Manger" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="24.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="homebtn" layoutX="23.0" layoutY="347.0" mnemonicParsing="false" onAction="#navtohome" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dash.css" text="Home">
+                              <Button fx:id="homebtn" layoutX="25.0" layoutY="293.0" mnemonicParsing="false" onAction="#navtohome" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dash.css" text="Home">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="HOME" size="1.5em" />
                                  </graphic>
@@ -79,49 +79,50 @@
                                     </LinearGradient>
                                  </textFill>
                               </Button>
-                              <Button fx:id="addemplyeebtn" layoutX="23.0" layoutY="393.0" mnemonicParsing="false" onAction="#navtoadd" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dash.css" text="Add Emplyee">
+                              <Button fx:id="addemplyeebtn" layoutX="24.0" layoutY="337.0" mnemonicParsing="false" onAction="#navtoadd" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dash.css" text="Add Emplyee">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="1.5em" translateY="1.0" wrappingWidth="16.5" />
                                  </graphic>
                               </Button>
-                              <Button fx:id="emplyeesalarybtn" layoutX="23.0" layoutY="438.0" mnemonicParsing="false" onAction="#navToRating" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dash.css" text="Rate">
+                              <Button fx:id="emplyeesalarybtn" layoutX="23.0" layoutY="382.0" mnemonicParsing="false" onAction="#navToRating" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dash.css" text="Rate">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="MONEY" size="1.5em" translateX="-2.0" />
                                  </graphic>
                               </Button>
-                              <Button fx:id="logoutbtn" layoutX="54.0" layoutY="589.0" mnemonicParsing="false" onAction="#logout" prefHeight="30.0" prefWidth="118.0" stylesheets="@dash.css" text="LOG OUT" textFill="WHITE" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="54.0">
+                              <Button fx:id="logoutbtn" layoutX="54.0" layoutY="564.0" mnemonicParsing="false" onAction="#logout" prefHeight="30.0" prefWidth="118.0" styleClass="btn" stylesheets="@dash.css" text="LOG OUT" textFill="WHITE" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="54.0">
                                  <graphic>
                                     <FontAwesomeIcon fill="#f8f8f8" glyphName="SIGN_OUT" size="1.24em" text="" />
                                  </graphic>
-                                 <styleClass>
-                                    <String fx:value="logout" />
-                                    <String fx:value="shadow" />
-                                 </styleClass>
                               </Button>
                               <HBox alignment="CENTER" layoutX="-1.0" layoutY="175.0" prefHeight="41.0" prefWidth="228.0">
                                  <children>
-                                    <Label fx:id="usernamelabel" alignment="CENTER" prefHeight="27.0" prefWidth="210.0" text="Ali Sayed" textFill="WHITE">
+                                    <Label alignment="CENTER" prefHeight="17.0" prefWidth="161.0" text="Department" textFill="WHITE">
                                        <font>
-                                          <Font size="18.0" />
+                                          <Font name="System Bold" size="18.0" />
                                        </font>
                                     </Label>
                                  </children>
                               </HBox>
-                              <Label alignment="CENTER" layoutX="34.0" layoutY="216.0" prefHeight="17.0" prefWidth="161.0" text="Department" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="24.0" />
-                                 </font>
-                              </Label>
-                              <Line endX="70.0" layoutX="111.0" layoutY="338.0" startX="-66.5" stroke="#fcfcfc" />
                               <HBox alignment="CENTER" layoutX="1.0" layoutY="251.0" prefHeight="48.0" prefWidth="227.0">
                                  <children>
-                                    <Label fx:id="usernamelabel1" alignment="CENTER" prefHeight="27.0" prefWidth="209.0" text="Ali Sayed" textFill="WHITE">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Label>
+                                    <Line endX="70.0" startX="-66.5" stroke="#fcfcfc" />
                                  </children>
                               </HBox>
+                              <ImageView fitHeight="118.0" fitWidth="198.0" layoutX="55.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@profile.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="usernamelabel" alignment="CENTER" layoutX="8.0" layoutY="148.0" prefHeight="27.0" prefWidth="210.0" text="Ali Sayed" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="usernamelabel1" alignment="CENTER" layoutX="8.0" layoutY="216.0" prefHeight="27.0" prefWidth="209.0" text="Ali Sayed" textFill="WHITE">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                      </children>
@@ -132,11 +133,11 @@
                      <children>
                         <AnchorPane fx:id="addpage" layoutX="44.0" layoutY="27.0" prefHeight="644.0" prefWidth="891.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane layoutX="286.0" layoutY="156.0" prefHeight="630.0" prefWidth="849.0" stylesheets="@dash.css" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
+                              <AnchorPane layoutX="286.0" layoutY="156.0" prefHeight="630.0" prefWidth="849.0" styleClass="page" stylesheets="@dash.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <AnchorPane layoutX="11.0" prefHeight="388.0" prefWidth="946.0" stylesheets="@dash.css" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="1.0">
                                        <children>
-                                          <HBox layoutY="61.0" prefHeight="288.0" prefWidth="837.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
+                                          <HBox layoutY="54.0" prefHeight="335.0" prefWidth="960.0" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="54.0">
                                              <children>
                                                 <TableView fx:id="addemployeetable" onMouseClicked="#addEmployeonselct" prefHeight="314.0" prefWidth="946.0" HBox.hgrow="ALWAYS">
                                                    <columns>
@@ -154,43 +155,43 @@
                                                 </TableView>
                                              </children>
                                           </HBox>
-                                          <CheckBox fx:id="addotherdep" layoutX="229.0" layoutY="14.0" mnemonicParsing="false" onAction="#showornotshow" text="Show Other  Department Employees" />
-                                          <ComboBox fx:id="seacrhcombo" layoutX="36.0" layoutY="10.0" onAction="#searchfilter" prefWidth="150.0" promptText="Show Specialition" />
+                                          <CheckBox fx:id="addotherdep" layoutX="212.0" layoutY="14.0" mnemonicParsing="false" onAction="#showornotshow" text="Show Other  Department Employees" />
+                                          <ComboBox fx:id="seacrhcombo" layoutX="36.0" layoutY="10.0" onAction="#searchfilter" prefWidth="150.0" promptText="Show Specialition" styleClass="textfield" stylesheets="@dash.css" />
                                        </children>
                                     </AnchorPane>
-                                    <Label layoutX="38.0" layoutY="400.0" text="Employe ID" />
-                                    <Label layoutX="38.0" layoutY="439.0" text="Employe Name" />
-                                    <TextField fx:id="addemplyeename" layoutX="137.0" layoutY="435.0" styleClass="textfield" />
-                                    <Label layoutX="35.0" layoutY="515.0" text="Employe Salary" />
-                                    <Label layoutX="340.0" layoutY="399.0" text="Experience" />
-                                    <TextField fx:id="addemplyeeexperience" layoutX="431.0" layoutY="394.0" styleClass="textfield" />
-                                    <Label layoutX="38.0" layoutY="478.0" text="Employe Age" />
-                                    <TextField fx:id="addemplyeeage" layoutX="137.0" layoutY="474.0" styleClass="textfield" />
-                                    <Label layoutX="338.0" layoutY="438.0" text="Specialition" />
-                                    <AnchorPane fx:id="addemplyeeimage" layoutX="689.0" layoutY="402.0" prefHeight="170.0" prefWidth="94.0" stylesheets="@dash.css">
+                                    <Label layoutX="39.0" layoutY="422.0" text="Employe ID" />
+                                    <Label layoutX="39.0" layoutY="461.0" text="Employe Name" />
+                                    <TextField fx:id="addemplyeename" layoutX="138.0" layoutY="457.0" styleClass="textfield" />
+                                    <Label layoutX="36.0" layoutY="537.0" text="Employe Salary" />
+                                    <Label layoutX="341.0" layoutY="421.0" text="Experience" />
+                                    <TextField fx:id="addemplyeeexperience" layoutX="432.0" layoutY="416.0" styleClass="textfield" />
+                                    <Label layoutX="39.0" layoutY="500.0" text="Employe Age" />
+                                    <TextField fx:id="addemplyeeage" layoutX="138.0" layoutY="496.0" styleClass="textfield" />
+                                    <Label layoutX="339.0" layoutY="460.0" text="Specialition" />
+                                    <AnchorPane fx:id="addemplyeeimage" layoutX="744.0" layoutY="411.0" prefHeight="170.0" prefWidth="94.0" stylesheets="@dash.css" AnchorPane.rightAnchor="94.0">
                                        <styleClass>
                                           <String fx:value="shadow" />
                                           <String fx:value="white-bg" />
                                        </styleClass>
                                        <children>
-                                          <Button fx:id="addemplyeeimportbtn" layoutY="133.0" mnemonicParsing="false" onAction="#importimage" prefHeight="37.0" prefWidth="137.0" styleClass="import-btn" stylesheets="@dash.css" text="import" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                                          <Button fx:id="addemplyeeimportbtn" layoutY="133.0" mnemonicParsing="false" onAction="#importimage" prefHeight="37.0" prefWidth="137.0" styleClass="btn" stylesheets="@dash.css" text="import" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                           <ImageView fx:id="addemplyeimageview" fitHeight="134.0" fitWidth="134.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                                        </children>
                                     </AnchorPane>
-                                    <Button fx:id="addemplyeeadd" layoutX="580.0" layoutY="552.0" mnemonicParsing="false" onAction="#addEmployee" prefHeight="37.0" prefWidth="82.0" styleClass="add-btn" text="add" />
-                                    <Button fx:id="addemplyeedl" layoutX="402.0" layoutY="552.0" mnemonicParsing="false" onAction="#del" prefHeight="37.0" prefWidth="87.0" styleClass="delete-btn" text="delete" />
-                                    <Button fx:id="addemplyeeup" layoutX="494.0" layoutY="552.0" mnemonicParsing="false" onAction="#update" prefHeight="37.0" prefWidth="82.0" styleClass="update-btn" text="update" />
-                                    <Button fx:id="addemplyeeclr" layoutX="308.0" layoutY="552.0" mnemonicParsing="false" onAction="#clr" prefHeight="37.0" prefWidth="87.0" styleClass="clear-btn" text="clear" />
-                                    <TextField fx:id="addemplye_salary" layoutX="136.0" layoutY="511.0" styleClass="textfield" stylesheets="@dash.css" />
-                                    <Label layoutX="335.0" layoutY="481.0" text=" Department" />
-                                    <Label fx:id="addemployedep" layoutX="431.0" layoutY="476.0" prefHeight="25.0" prefWidth="146.0" styleClass="textfield" stylesheets="@dash.css">
+                                    <Button fx:id="addemplyeeadd" layoutX="581.0" layoutY="562.0" mnemonicParsing="false" onAction="#addEmployee" prefHeight="37.0" prefWidth="82.0" styleClass="add-btn" text="add" AnchorPane.rightAnchor="302.0" />
+                                    <Button fx:id="addemplyeedl" layoutX="403.0" layoutY="562.0" mnemonicParsing="false" onAction="#del" prefHeight="37.0" prefWidth="87.0" styleClass="delete-btn" text="delete" AnchorPane.rightAnchor="482.0" />
+                                    <Button fx:id="addemplyeeup" layoutX="495.0" layoutY="562.0" mnemonicParsing="false" onAction="#update" prefHeight="37.0" prefWidth="82.0" styleClass="update-btn" text="update" AnchorPane.rightAnchor="392.0" />
+                                    <Button fx:id="addemplyeeclr" layoutX="309.0" layoutY="562.0" mnemonicParsing="false" onAction="#clr" prefHeight="37.0" prefWidth="87.0" styleClass="clear-btn" text="clear" AnchorPane.rightAnchor="576.0" />
+                                    <TextField fx:id="addemplye_salary" layoutX="137.0" layoutY="533.0" styleClass="textfield" stylesheets="@dash.css" />
+                                    <Label layoutX="336.0" layoutY="503.0" text=" Department" />
+                                    <Label fx:id="addemployedep" layoutX="432.0" layoutY="498.0" prefHeight="25.0" prefWidth="146.0" styleClass="textfield" stylesheets="@dash.css">
                                        <padding>
                                           <Insets left="9.0" />
                                        </padding>
                                     </Label>
-                                    <ComboBox fx:id="newaddempsepc" layoutX="429.0" layoutY="435.0" prefWidth="150.0" styleClass="textfield" />
+                                    <ComboBox fx:id="newaddempsepc" layoutX="430.0" layoutY="457.0" prefWidth="150.0" styleClass="textfield" />
                                     <Label fx:id="warn" alignment="CENTER" contentDisplay="CENTER" layoutX="310.0" layoutY="599.0" prefHeight="17.0" prefWidth="354.0" text="You Cant Edit , Delete , Add Other Departments" textFill="RED" visible="false" />
-                                    <Label fx:id="addemplyeeid" layoutX="138.0" layoutY="395.0" prefHeight="26.0" prefWidth="144.0" styleClass="textfield" stylesheets="@dash.css">
+                                    <Label fx:id="addemplyeeid" layoutX="139.0" layoutY="417.0" prefHeight="26.0" prefWidth="144.0" styleClass="textfield" stylesheets="@dash.css">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
@@ -199,20 +200,12 @@
                                        </padding>
                                     </Label>
                                  </children>
-                                 <styleClass>
-                                    <String fx:value="shadow" />
-                                    <String fx:value="white-bg" />
-                                 </styleClass>
                               </AnchorPane>
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="salarypage" layoutX="7.0" layoutY="59.0" prefHeight="644.0" prefWidth="863.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane layoutX="323.0" prefHeight="621.0" prefWidth="649.0" stylesheets="@dash.css">
-                                 <styleClass>
-                                    <String fx:value="shadow" />
-                                    <String fx:value="white-bg" />
-                                 </styleClass>
+                              <AnchorPane layoutX="313.0" prefHeight="643.0" prefWidth="659.0" stylesheets="@dash.css" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <TableView fx:id="ratingtable" layoutY="58.0" onMouseClicked="#addemployeonselectratingtable" prefHeight="414.0" prefWidth="649.0" stylesheets="@dash.css">
                                        <columns>
@@ -226,11 +219,7 @@
                                     </TableView>
                                  </children>
                               </AnchorPane>
-                              <AnchorPane layoutX="14.0" layoutY="1.0" prefHeight="621.0" prefWidth="295.0" stylesheets="@dash.css">
-                                 <styleClass>
-                                    <String fx:value="white-bg" />
-                                    <String fx:value="shadow" />
-                                 </styleClass>
+                              <AnchorPane layoutY="1.0" prefHeight="643.0" prefWidth="309.0" stylesheets="@dash.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <Label layoutX="30.0" layoutY="65.0" prefHeight="17.0" prefWidth="76.0" text="Name" />
                                     <Label fx:id="ratingname" layoutX="104.0" layoutY="61.0" prefHeight="25.0" prefWidth="170.0" styleClass="label-info" />
@@ -238,30 +227,22 @@
                                     <Label fx:id="ratingrating" layoutX="103.0" layoutY="95.0" prefHeight="25.0" prefWidth="171.0" styleClass="label-info" />
                                     <Label layoutX="30.0" layoutY="136.0" prefHeight="17.0" prefWidth="76.0" text="Active" />
                                     <Label alignment="CENTER" layoutY="223.0" prefHeight="17.0" prefWidth="295.0" text="Rate" />
-                                    <Button fx:id="ratingapply" layoutX="98.0" layoutY="339.0" mnemonicParsing="false" onAction="#apply" prefHeight="49.0" prefWidth="102.0" styleClass="update-btn" text="Apply" />
+                                    <Button fx:id="ratingapply" layoutX="98.0" layoutY="339.0" mnemonicParsing="false" onAction="#apply" prefHeight="49.0" prefWidth="102.0" styleClass="btn" text="Apply" />
                                     <Slider fx:id="rateslider" blockIncrement="1.0" layoutX="39.0" layoutY="253.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" prefHeight="38.0" prefWidth="219.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
                                     <Label layoutX="35.0" layoutY="26.0" prefHeight="17.0" prefWidth="63.0" text="ID" />
                                     <Label fx:id="ratingid" layoutX="104.0" layoutY="22.0" prefHeight="25.0" prefWidth="169.0" styleClass="label-info" />
                                     <Label fx:id="ratingshow" alignment="CENTER" layoutX="44.0" layoutY="291.0" prefHeight="27.0" prefWidth="211.0" text="0" />
-                                    <ComboBox fx:id="ratingactive" layoutX="105.0" layoutY="132.0" prefHeight="25.0" prefWidth="170.0" promptText="Active" />
+                                    <ComboBox fx:id="ratingactive" layoutX="105.0" layoutY="132.0" prefHeight="25.0" prefWidth="170.0" promptText="Active" styleClass="textfield" stylesheets="@dash.css" />
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
                         <AnchorPane fx:id="hompage" prefHeight="623.0" prefWidth="855.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane prefHeight="511.0" prefWidth="772.0" stylesheets="@dash.css" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="7.0" AnchorPane.topAnchor="7.0">
-                                 <styleClass>
-                                    <String fx:value="shadow" />
-                                    <String fx:value="white-bg" />
-                                 </styleClass>
+                              <AnchorPane prefHeight="511.0" prefWidth="772.0" styleClass="page" stylesheets="@dash.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <HBox alignment="CENTER" layoutX="1.0" layoutY="14.0" maxHeight="145.0" prefHeight="143.0" prefWidth="848.0" spacing="30.0" AnchorPane.bottomAnchor="475.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
-                                          <AnchorPane maxHeight="145.0" prefHeight="161.0" prefWidth="227.0" stylesheets="@dash.css">
-                                             <styleClass>
-                                                <String fx:value="nav-form" />
-                                                <String fx:value="card" />
-                                             </styleClass>
+                                          <AnchorPane maxHeight="145.0" prefHeight="161.0" prefWidth="227.0" styleClass="main-home-card" stylesheets="@dashboard.css">
                                              <children>
                                                 <FontAwesomeIcon fill="WHITE" glyphName="USERS" layoutX="32.0" layoutY="90.0" selectionEnd="0" size="5em" wrappingWidth="102.57143020629883" />
                                                 <Label layoutX="32.0" layoutY="111.0" prefHeight="28.0" prefWidth="116.0" text="Total Employe" textFill="WHITE">
@@ -276,7 +257,7 @@
                                                 </Label>
                                              </children>
                                           </AnchorPane>
-                                          <AnchorPane maxHeight="145.0" prefHeight="161.0" prefWidth="227.0" stylesheets="@dash.css">
+                                          <AnchorPane maxHeight="145.0" prefHeight="161.0" prefWidth="227.0" styleClass="main-home-card" stylesheets="@dash.css">
                                              <children>
                                                 <Label layoutX="20.0" layoutY="111.0" prefHeight="28.0" prefWidth="116.0" text="Total Presents" textFill="WHITE">
                                                    <font>
@@ -290,16 +271,8 @@
                                                 </Label>
                                                 <FontAwesomeIcon fill="WHITE" glyphName="CHECK" layoutX="26.0" layoutY="81.0" size="5em" wrappingWidth="105.0" />
                                              </children>
-                                             <styleClass>
-                                                <String fx:value="nav-form" />
-                                                <String fx:value="card" />
-                                             </styleClass>
                                           </AnchorPane>
-                                          <AnchorPane maxHeight="145.0" prefHeight="161.0" prefWidth="227.0" stylesheets="@dash.css">
-                                             <styleClass>
-                                                <String fx:value="nav-form" />
-                                                <String fx:value="card" />
-                                             </styleClass>
+                                          <AnchorPane maxHeight="145.0" prefHeight="161.0" prefWidth="227.0" styleClass="main-home-card" stylesheets="@dash.css">
                                              <children>
                                                 <Label layoutX="21.0" layoutY="115.0" prefHeight="28.0" prefWidth="163.0" text="Total Inactive Employes" textFill="WHITE">
                                                    <font>
@@ -321,13 +294,13 @@
                                        <children>
                                           <StackPane prefHeight="150.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <BarChart fx:id="homecahrt" prefHeight="391.0" prefWidth="832.0" title="Employees Datachart">
-                                                   <xAxis>
-                                                      <CategoryAxis side="BOTTOM" />
-                                                   </xAxis>
-                                                   <yAxis>
-                                                      <NumberAxis side="LEFT" />
-                                                   </yAxis>
+                                                <BarChart fx:id="homechart3" visible="false">
+                                                  <xAxis>
+                                                    <CategoryAxis side="BOTTOM" />
+                                                  </xAxis>
+                                                  <yAxis>
+                                                    <NumberAxis side="LEFT" />
+                                                  </yAxis>
                                                 </BarChart>
                                                 <BarChart fx:id="homecahrt1" prefHeight="391.0" prefWidth="700.0" title="Employees Datachart" visible="false">
                                                    <xAxis>
@@ -337,21 +310,24 @@
                                                       <NumberAxis side="LEFT" />
                                                    </yAxis>
                                                 </BarChart>
+                                                <LineChart fx:id="homecahrt" alternativeRowFillVisible="false" animated="false" createSymbols="false" scaleShape="false" stylesheets="@dashboard.css" title="Employees Datachart">
+                                                  <xAxis>
+                                                    <CategoryAxis side="BOTTOM" />
+                                                  </xAxis>
+                                                  <yAxis>
+                                                    <NumberAxis side="LEFT" />
+                                                  </yAxis>
+                                                </LineChart>
                                              </children>
                                           </StackPane>
                                        </children>
                                     </HBox>
-                                    <ComboBox fx:id="homecombo" layoutX="746.0" layoutY="188.0" onAction="#dataonchart" prefWidth="150.0" promptText="chartview" />
+                                    <ComboBox fx:id="homecombo" layoutX="746.0" layoutY="188.0" onAction="#dataonchart" prefWidth="150.0" promptText="chartview" styleClass="textfield" stylesheets="@dash.css" />
                                  </children>
                               </AnchorPane>
                            </children>
                         </AnchorPane>
-                        <TextField fx:id="addemplyeesearch" layoutX="683.0" layoutY="14.0" prefHeight="25.0" prefWidth="258.0" promptText="Search" visible="false">
-                           <styleClass>
-                              <String fx:value="textfield" />
-                              <String fx:value="search" />
-                           </styleClass>
-                        </TextField>
+                        <TextField fx:id="addemplyeesearch" layoutX="683.0" layoutY="14.0" prefHeight="25.0" prefWidth="258.0" promptText="Search" styleClass="textfield" stylesheets="@dash.css" translateY="-5.0" visible="false" />
                      </children>
                   </AnchorPane>
                </center>
