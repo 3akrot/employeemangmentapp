@@ -3,6 +3,8 @@ module com.example.employeemangmentapp {
     requires javafx.fxml;
     requires java.sql;
     requires jdk.jdi;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
 //    requires AnimateFX;
 //    requires mysql.connector.j;
 

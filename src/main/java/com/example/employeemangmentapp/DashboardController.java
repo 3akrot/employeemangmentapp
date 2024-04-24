@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.css.Style;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,15 +16,23 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.sql.*;
 import java.text.DecimalFormat;
@@ -36,6 +45,8 @@ public class DashboardController implements Initializable {
     private TableView<Employee> addemployeetable;
     @FXML
     private ComboBox<String> seacrhcombo;
+    @FXML
+    private ImageView editimagebtn;
 
     @FXML
     private TableColumn<Employee, Date> addemplye_col_datemember;
@@ -45,6 +56,8 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label addemployedep;
+    @FXML
+    private ImageView userimage;
 
 
     @FXML
@@ -115,6 +128,8 @@ public class DashboardController implements Initializable {
     private TextField addemplyeesearch;
     @FXML
     ImageView addemplyeimageview;
+    @FXML
+    private Button exportexcelbtn;
 
 
     @FXML
@@ -184,6 +199,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label ratingrating;
+
 
 
     @FXML
@@ -814,6 +830,124 @@ public class DashboardController implements Initializable {
         addemplyeeadd.setDisable(false);
         warn.setVisible(false);
     }
+    @FXML
+    void exportExcel(ActionEvent event) throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Employees");
+        for(int i = 0 ; i < 10 ; i++){
+            sheet.setColumnWidth(i,7000);
+        }
+        Row header  = sheet.createRow(0);
+        //head cells styles
+        CellStyle style = workbook.createCellStyle();
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        XSSFFont font = (XSSFFont) workbook.createFont();
+        font.setBold(true);
+        font.setFontName("Arial");
+        style.setFont(font);
+        CellStyle style1 = workbook.createCellStyle();
+        style1.setAlignment(HorizontalAlignment.CENTER);
+        //col 1
+        org.apache.poi.ss.usermodel.Cell cell1 = header.createCell(0);
+        cell1.setCellStyle(style);
+        cell1.setCellValue("ID");
+        //col 2
+        org.apache.poi.ss.usermodel.Cell cell2 = header.createCell(1);
+        cell2.setCellStyle(style);
+        cell2.setCellValue("Name");
+        //col 1
+        org.apache.poi.ss.usermodel.Cell cell3 = header.createCell(2);
+        cell3.setCellStyle(style);
+        cell3.setCellValue("Age");
+        //col 1
+        org.apache.poi.ss.usermodel.Cell cell4 = header.createCell(3);
+        cell4.setCellStyle(style);
+        cell4.setCellValue("Department");
+        //col 5
+        org.apache.poi.ss.usermodel.Cell cell5 = header.createCell(4);
+        cell5.setCellStyle(style);
+        cell5.setCellValue("Specialization");
+        //col 6
+        org.apache.poi.ss.usermodel.Cell cell6 = header.createCell(5);
+        cell6.setCellStyle(style);
+        cell6.setCellValue("Date Member");
+        //col 7
+        org.apache.poi.ss.usermodel.Cell cell7 = header.createCell(6);
+        cell7.setCellStyle(style);
+        cell7.setCellValue("Experience");
+        //col 8
+        org.apache.poi.ss.usermodel.Cell cell8 = header.createCell(7);
+        cell8.setCellStyle(style);
+        cell8.setCellValue("Rating");
+        //col 9
+        org.apache.poi.ss.usermodel.Cell cell9 = header.createCell(8);
+        cell9.setCellStyle(style);
+        cell9.setCellValue("Salary");
+        //col 10
+        Cell cell10 = header.createCell(9);
+        cell10.setCellStyle(style);
+        cell10.setCellValue("Active");
+
+        //add employees data
+        ObservableList<Employee> employees  = addemployeetable.getItems();
+        for(int i = 0 ; i < employees.size(); i++){
+            Row row  = sheet.createRow(i + 1);
+            //get id data
+            org.apache.poi.ss.usermodel.Cell cellid = row.createCell(0);
+            cellid.setCellValue(employees.get(i).getId());
+            cellid.setCellStyle(style1);
+            //get name data
+            org.apache.poi.ss.usermodel.Cell cellname = row.createCell(1);
+            cellname.setCellValue(employees.get(i).getName());
+            cellname.setCellStyle(style1);
+            //get age data
+            org.apache.poi.ss.usermodel.Cell cellage = row.createCell(2);
+            cellage.setCellValue(employees.get(i).getAge());
+            cellage.setCellStyle(style1);
+            //get dep data
+            org.apache.poi.ss.usermodel.Cell celldep = row.createCell(3);
+            celldep.setCellValue(employees.get(i).getDiv());
+            celldep.setCellStyle(style1);
+            //get spec data
+            org.apache.poi.ss.usermodel.Cell cellspec = row.createCell(4);
+            cellspec.setCellValue(employees.get(i).getSpecialition());
+            cellspec.setCellStyle(style1);
+            //get datemem data
+            org.apache.poi.ss.usermodel.Cell celldatemem = row.createCell(5);
+            celldatemem.setCellValue(employees.get(i).getDatemem().toString());
+            celldatemem.setCellStyle(style1);
+            //get experience data
+            org.apache.poi.ss.usermodel.Cell cellexp = row.createCell(6);
+            cellexp.setCellValue(employees.get(i).getExyears());
+            cellexp.setCellStyle(style1);
+            // get rating data
+            org.apache.poi.ss.usermodel.Cell cellrating = row.createCell(7);
+            cellrating.setCellValue(employees.get(i).getRating());
+            cellrating.setCellStyle(style1);
+            // get salary data
+            org.apache.poi.ss.usermodel.Cell cellsal = row.createCell(8);
+            cellsal.setCellValue(employees.get(i).getSalary());
+            cellsal.setCellStyle(style1);
+            // get active data
+            org.apache.poi.ss.usermodel.Cell cellactive = row.createCell(9);
+            cellactive.setCellValue(employees.get(i).getActive());
+            cellactive.setCellStyle(style1);
+
+
+    }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Excel File");
+        fileChooser.setInitialFileName("employeemangmentapp.xlsx");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+
+        // Show save file dialog
+        File file = fileChooser.showSaveDialog((Stage) addemployeetable.getScene().getWindow() );
+        FileOutputStream outputStream = new FileOutputStream(file.getAbsolutePath());
+        workbook.write(outputStream);
+    }
+
     //--------------------------------------this part is for Rating page---------------------------------------------------------------
     public void showemployessonratingtable(ObservableList<Employee> listtoshow) throws SQLException {
 
@@ -987,8 +1121,61 @@ public class DashboardController implements Initializable {
       stage.setIconified(true);
 
     }
+    @FXML
+    void changeimage(MouseEvent event) throws SQLException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Please Choose An Image");
+        File file = fileChooser.showOpenDialog(addemplyeesearch.getScene().getWindow());
+        if (file == null){
+            return;
+        }
+        Connection con = DataBaseConnection.getconncetion();
+        PreparedStatement ps = con.prepareStatement("UPDATE admin SET image = ? WHERE username = ?");
+        ps.setString(1,file.toURI().toString());
+        ps.setString(2,Admin.adminusername);
+        ps.executeUpdate();
+        Image image = new Image(file.toURI().toString());
+
+        userimage.setImage(image);
+        Rectangle clip = new Rectangle(115, 115);
+        clip.setArcWidth(170); // Adjust the arc width to control the border radius
+        clip.setArcHeight(170); // Adjust the arc height to control the border radius
+        clip.setFill(Color.WHITE);
+
+        // Apply the mask to the ImageView
+        userimage.setClip(clip);
+
+        // Apply blend mode to remove the corners
+        userimage.setBlendMode(BlendMode.SRC_ATOP);
+
+
+
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        if (Admin.image != null){
+            Image img = new Image(Admin.image);
+            userimage.setFitWidth(198);
+            userimage.setFitHeight(118);
+
+            // Create a rectangle to serve as the mask
+            Rectangle clip = new Rectangle(115, 115);
+            clip.setArcWidth(170); // Adjust the arc width to control the border radius
+            clip.setArcHeight(170); // Adjust the arc height to control the border radius
+            clip.setFill(Color.WHITE);
+
+            // Apply the mask to the ImageView
+            userimage.setClip(clip);
+
+            // Apply blend mode to remove the corners
+            userimage.setBlendMode(BlendMode.SRC_ATOP);
+
+            System.out.println(Admin.image);
+            Image image = new Image(Admin.image);
+            userimage.setImage(image);
+        }
+
 
 
         try {

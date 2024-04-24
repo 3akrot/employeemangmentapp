@@ -23,32 +23,33 @@ public class ComboBoxLists {
         Departmentslist.add("Cyber Security");
         Departmentslist.add("Software Engineering");
         Departmentslist.add("Web Development");
-
         //vaction list
         Vactionlist.add("True");
         Vactionlist.add("On Vaction");
-        //CompyterScienceSpecializations
+        //CompyterScience Specializations
         CompyterScienceSpecialition.add("Artificial Intelligence");
         CompyterScienceSpecialition.add("Machine Learning");
         CompyterScienceSpecialition.add("Data Science");
-        //CyberSecirity
+        //CyberSecirity Specializations
         CyberSecuritypecialition.add("Ethical Hacking");
         CyberSecuritypecialition.add("Network Security");
         CyberSecuritypecialition.add("Information Security");
         CyberSecuritypecialition.add("Management Cybersecurity");
         CyberSecuritypecialition.add("Analytics");
         CyberSecuritypecialition.add("Malware analyst");
-        //Software Enginering
+        //Software Enginering Specializations
         SoftwareDevpecialition.add("Mobile App Development");
         SoftwareDevpecialition.add("Game Development");
         SoftwareDevpecialition.add("Embedded Systems Development");
         SoftwareDevpecialition.add("DevOps");
-        //web Devlopment
+        //web Devlopment Specializations
         WebDevlopmentpecialition.add("Frontend Web Development");
         WebDevlopmentpecialition.add("Backend Web Development");
         WebDevlopmentpecialition.add("Full Stack Web Development");
         WebDevlopmentpecialition.add("Web Design");
         WebDevlopmentpecialition.add("Responsive Web Development");
+  
+
         //chartlis
         Chartlist.add("Employes By Their joining Date");
         Chartlist.add("AVG Salary BY Specialization");
@@ -72,6 +73,7 @@ public class ComboBoxLists {
         else if (Department.equals("Cyber Security")){
             return CyberSecuritypecialition;
         }
+
         else if(Department.equals("Software Engineering")){
             return SoftwareDevpecialition;
         }

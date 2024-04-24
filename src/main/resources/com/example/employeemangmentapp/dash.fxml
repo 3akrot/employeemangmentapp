@@ -3,6 +3,7 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
@@ -84,9 +85,9 @@
                                     <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="1.5em" translateY="1.0" wrappingWidth="16.5" />
                                  </graphic>
                               </Button>
-                              <Button fx:id="emplyeesalarybtn" layoutX="23.0" layoutY="382.0" mnemonicParsing="false" onAction="#navToRating" prefHeight="35.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dash.css" text="Rate">
+                              <Button fx:id="emplyeesalarybtn" layoutX="24.0" layoutY="382.0" mnemonicParsing="false" onAction="#navToRating" prefHeight="35.0" prefWidth="179.0" styleClass="nav-btn" stylesheets="@dash.css" text="Rate">
                                  <graphic>
-                                    <FontAwesomeIcon fill="WHITE" glyphName="MONEY" size="1.5em" translateX="-2.0" />
+                                    <FontAwesomeIcon fill="WHITE" glyphName="STAR" size="1.5em" translateX="-2.0" />
                                  </graphic>
                               </Button>
                               <Button fx:id="logoutbtn" layoutX="54.0" layoutY="564.0" mnemonicParsing="false" onAction="#logout" prefHeight="30.0" prefWidth="118.0" styleClass="btn" stylesheets="@dash.css" text="LOG OUT" textFill="WHITE" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="54.0">
@@ -108,7 +109,7 @@
                                     <Line endX="70.0" startX="-66.5" stroke="#fcfcfc" />
                                  </children>
                               </HBox>
-                              <ImageView fitHeight="118.0" fitWidth="198.0" layoutX="55.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="userimage" fitHeight="118.0" fitWidth="198.0" layoutX="55.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@profile.png" />
                                  </image>
@@ -123,6 +124,14 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
+                              <ImageView fx:id="editimagebtn" fitHeight="29.0" fitWidth="25.0" layoutX="147.0" layoutY="103.0" onMouseClicked="#changeimage" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@pen.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                      </children>
@@ -145,7 +154,7 @@
                                                       <TableColumn fx:id="addemplye_col_name" prefWidth="159.0" text="Name" />
                                                       <TableColumn fx:id="addemplye_col_age" prefWidth="62.0" text="Age" />
                                                       <TableColumn fx:id="addemplye_col_div" prefWidth="134.0" text=" Department" />
-                                                      <TableColumn fx:id="addemplyeed_col_specl" prefWidth="163.0" text="Specialition" />
+                                                      <TableColumn fx:id="addemplyeed_col_specl" prefWidth="163.0" text="Specialization" />
                                                       <TableColumn fx:id="addemplye_col_datemember" prefWidth="108.0" text="Date Member" />
                                                       <TableColumn fx:id="addemplye_col_experience" prefWidth="107.0" text="Experience Years" />
                                                       <TableColumn fx:id="addemplye_col_rating" minWidth="8.0" prefWidth="57.0" resizable="false" text="Rating" />
@@ -199,6 +208,7 @@
                                           <Insets left="10.0" />
                                        </padding>
                                     </Label>
+                                    <Button fx:id="exportexcelbtn" layoutX="40.0" layoutY="565.0" mnemonicParsing="false" onAction="#exportExcel" prefHeight="33.0" prefWidth="119.0" styleClass="update-btn" text="export excel" />
                                  </children>
                               </AnchorPane>
                            </children>

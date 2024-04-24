@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.PasswordField?>
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeemangmentapp.LoginController">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
@@ -30,7 +31,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="username" layoutX="40.0" layoutY="150.0" onAction="#adminlog" prefHeight="30.0" prefWidth="220.0" promptText="username" styleClass="textfield" stylesheets="@login.css" />
-                  <TextField fx:id="password" layoutX="40.0" layoutY="200.0" onAction="#adminlog" prefHeight="30.0" prefWidth="220.0" promptText="password" styleClass="textfield" stylesheets="@login.css" />
+                  <PasswordField fx:id="password" layoutX="40.0" layoutY="200.0" onAction="#adminlog" prefHeight="30.0" prefWidth="220.0" promptText="password" styleClass="textfield" stylesheets="@login.css" />
                   <Button fx:id="login" layoutX="40.0" layoutY="253.0" mnemonicParsing="false" onAction="#adminlog" prefHeight="30.0" prefWidth="220.0" styleClass="login-btn" stylesheets="@login.css" text="Login" />
                   <Button fx:id="close" layoutX="234.0" layoutY="14.0" mnemonicParsing="false" onAction="#close" prefHeight="25.0" prefWidth="48.0" styleClass="close" stylesheets="@login.css" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <graphic>

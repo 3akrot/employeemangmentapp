@@ -36,7 +36,7 @@ public class LoginController implements Initializable {
     private Button logout;
 
     @FXML
-    private TextField password;
+    private PasswordField password;
 
     @FXML
     private AnchorPane signup;
@@ -170,6 +170,8 @@ public class LoginController implements Initializable {
                         System.out.println(ps);
                         Admin.adminname = queryrs.getString(4);
                         Admin.div = queryrs.getString(5);
+                        Admin.image = queryrs.getString(6);
+                        Admin.adminusername = queryrs.getString(2);
 
                         FXMLLoader loader = new FXMLLoader (getClass().getResource("dash.fxml"));
                         Parent root = loader.load();
