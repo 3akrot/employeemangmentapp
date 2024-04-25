@@ -193,6 +193,8 @@ public class LoginController implements Initializable {
                         });
                         root.setOnMouseDragged((MouseEvent e) -> {
                             //getScreen بتجيب مكان الماوس في الشاشه
+                            if (stage.fullScreenProperty().getValue()) return;
+
                             stage.setX(e.getScreenX() - x);
                             stage.setY(e.getScreenY() - y);
                             stage.setOpacity(0.7);
@@ -210,7 +212,7 @@ public class LoginController implements Initializable {
                         alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("ERROR");
                         alert.setHeaderText(null);
-                        alert.setContentText("Wrong Password Or UserName");
+                        alert.setContentText("Wrong Password");
                         alert.showAndWait();
                     }
 

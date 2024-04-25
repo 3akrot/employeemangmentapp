@@ -1,10 +1,9 @@
 package com.example.employeemangmentapp;
 
-import javafx.application.Platform;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.css.Style;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,10 +22,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -35,7 +34,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.net.URL;
 import java.sql.*;
-import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -59,6 +57,8 @@ public class DashboardController implements Initializable {
     @FXML
     private ImageView userimage;
 
+    @FXML
+    private Label fullscreen;
 
     @FXML
     private TableColumn<Employee, String> addemplye_col_age;
@@ -110,6 +110,8 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label addemplyeeid;
+    @FXML
+    private ProgressBar progress;
 
     @FXML
     private AnchorPane addemplyeeimage;
@@ -165,8 +167,8 @@ public class DashboardController implements Initializable {
     @FXML
     private Button logoutbtn;
 
-    @FXML
-    private StackPane root;
+//    @FXML
+//    private StackPane root;
 
     //------------------------------------rating------------------------------------------------------
     @FXML
@@ -261,7 +263,7 @@ public class DashboardController implements Initializable {
     boolean showallemp;
     String requiredspec = "All";
 
-    public ObservableList<Employee> addEmployessdata() throws SQLException {
+    public ObservableList<Employee> getEmployeesObservableListFromDatabase() throws SQLException {
     ObservableList<Employee> listofemployees = FXCollections.observableArrayList();
     connect = DataBaseConnection.getconncetion();
     try{
@@ -338,7 +340,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void ontypesearchup() throws SQLException {
-        filteredList = new FilteredList<>(addEmployessdata());
+        filteredList = new FilteredList<>(getEmployeesObservableListFromDatabase());
 
 
         // addlistner method
@@ -374,8 +376,10 @@ public class DashboardController implements Initializable {
 
                         });
                         try {
-                            showEmployessdata(filteredList);
+                            displayEmployessdataonEmployessTable(filteredList);
                             showemployessonratingtable(filteredList);
+                            dataonchart();
+                            displaymaincar();
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
@@ -383,8 +387,11 @@ public class DashboardController implements Initializable {
                     //لوالtextfield فاضي نعرض كل الموظفين من غير اي فلتره
                     else {
                         try {
-                            showEmployessdata(addEmployessdata());
-                            showemployessonratingtable(addEmployessdata());
+                            displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
+                            showemployessonratingtable(getEmployeesObservableListFromDatabase());
+                            dataonchart();
+                            displaymaincar();
+
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
@@ -394,12 +401,13 @@ public class DashboardController implements Initializable {
 
                 }
         );
+
         System.out.println(filteredList);
 
 
     }
 
-    private void showEmployessdata( ObservableList<Employee> listtoshow) throws SQLException {
+    private void displayEmployessdataonEmployessTable(ObservableList<Employee> listtoshow) throws SQLException {
         addemplye_col_ID.setCellValueFactory(new PropertyValueFactory<>("id"));
         addemplye_col_name.setCellValueFactory( new PropertyValueFactory<>( "name"));
         addemplye_col_age.setCellValueFactory(new PropertyValueFactory<>("age"));
@@ -461,9 +469,9 @@ public class DashboardController implements Initializable {
                     }
                     System.out.println(ps);
                     ps.executeUpdate();
-                    showEmployessdata(addEmployessdata());
+                    displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
                     //update filtered list to match the change
-                    filteredList = new FilteredList<>(addEmployessdata());
+                    filteredList = new FilteredList<>(getEmployeesObservableListFromDatabase());
                     //rest the search result
                     if(!addemplyeesearch.getText().isEmpty()){
                         char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
@@ -485,7 +493,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     void searchfilter() throws SQLException {
-        showEmployessdata(addEmployessdata());
+        displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
         if(addotherdep.isSelected() && ! seacrhcombo.getSelectionModel().getSelectedItem().equals("All")){
             addotherdep.fire();
         }
@@ -521,7 +529,7 @@ public class DashboardController implements Initializable {
         salarypage.setVisible(false);
         hompage.setVisible(false);
         addpage.setVisible(true);
-        addemplyeebtn.setStyle("-fx-background-color:#3b7dd4;");
+        addemplyeebtn.setStyle("-fx-background-color:#594e9c");
         homebtn.setStyle("background-color:transparent");
         emplyeesalarybtn.setStyle("background-color:transparent");
     }
@@ -535,7 +543,7 @@ public class DashboardController implements Initializable {
         salarypage.setVisible(false);
         addpage.setVisible(false);
         hompage.setVisible(true);
-        homebtn.setStyle("-fx-background-color:#3b7dd4;");
+        homebtn.setStyle("-fx-background-color:#594e9c;");
         addemplyeebtn.setStyle("background-color:transparent");
         emplyeesalarybtn.setStyle("background-color:transparent");
 
@@ -550,7 +558,6 @@ public class DashboardController implements Initializable {
         if(!addemplyeesearch.getText().isEmpty()) {
             addemplyeesearch.setText("");
         }
-            System.out.println("worked");
             addemplyeesearch.setText("a");
             addemplyeesearch.setText("");
 
@@ -563,7 +570,7 @@ public class DashboardController implements Initializable {
         addemplyeesearch.setVisible(true);
         addpage.setVisible(false);
         hompage.setVisible(false);
-        emplyeesalarybtn.setStyle("-fx-background-color:#3b7dd4;");
+        emplyeesalarybtn.setStyle("-fx-background-color:#594e9c;");
         homebtn.setStyle("background-color:transparent");
         addemplyeebtn.setStyle("background-color:transparent");
         salarypage.setVisible(true);
@@ -609,7 +616,7 @@ public class DashboardController implements Initializable {
             }
 
             try {
-                showEmployessdata(addEmployessdata());
+                displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -618,7 +625,7 @@ public class DashboardController implements Initializable {
             showallemp = false;
 
             try {
-                showEmployessdata(addEmployessdata());
+                displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -652,7 +659,7 @@ public class DashboardController implements Initializable {
             enablenodes();
         }
         else{
-            disablenodes();
+            disableNodes();
 
         }
         addemplyeeid.setText(String.valueOf(employee.getId()));
@@ -704,8 +711,8 @@ public class DashboardController implements Initializable {
         if(ans.get() == ButtonType.OK){
             ps.executeUpdate();
             System.out.println(ps);
-            filteredList = new FilteredList<>(addEmployessdata());
-            showEmployessdata(addEmployessdata());
+            filteredList = new FilteredList<>(getEmployeesObservableListFromDatabase());
+            displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
             if(!addemplyeesearch.getText().isEmpty()){
                 char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
                 addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
@@ -775,9 +782,9 @@ public class DashboardController implements Initializable {
             ps.executeUpdate();
             System.out.println(ps);
 
-            showEmployessdata(addEmployessdata());
+            displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
             //update filtered list to match the change
-            filteredList = new FilteredList<>(addEmployessdata());
+            filteredList = new FilteredList<>(getEmployeesObservableListFromDatabase());
             //rest the search result
             if(!addemplyeesearch.getText().isEmpty()){
                 char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
@@ -799,7 +806,7 @@ public class DashboardController implements Initializable {
         }
     }
     @FXML
-    public void disablenodes(){
+    public void disableNodes(){
         addemplyeeid.setDisable(true);
         addemplyeename.setDisable(true);
         addemplyeeage.setDisable(true);
@@ -838,13 +845,19 @@ public class DashboardController implements Initializable {
             sheet.setColumnWidth(i,7000);
         }
         Row header  = sheet.createRow(0);
+        header.setHeight((short) 400);
+
         //head cells styles
         CellStyle style = workbook.createCellStyle();
         style.setAlignment(HorizontalAlignment.CENTER);
         style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.getIndex());
         style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+
         XSSFFont font = (XSSFFont) workbook.createFont();
         font.setBold(true);
+        font.setFontHeight(10);
         font.setFontName("Arial");
         style.setFont(font);
         CellStyle style1 = workbook.createCellStyle();
@@ -853,6 +866,7 @@ public class DashboardController implements Initializable {
         org.apache.poi.ss.usermodel.Cell cell1 = header.createCell(0);
         cell1.setCellStyle(style);
         cell1.setCellValue("ID");
+
         //col 2
         org.apache.poi.ss.usermodel.Cell cell2 = header.createCell(1);
         cell2.setCellStyle(style);
@@ -944,8 +958,100 @@ public class DashboardController implements Initializable {
 
         // Show save file dialog
         File file = fileChooser.showSaveDialog((Stage) addemployeetable.getScene().getWindow() );
+        if(file == null) return;
         FileOutputStream outputStream = new FileOutputStream(file.getAbsolutePath());
         workbook.write(outputStream);
+        workbook.close();
+    }
+    @FXML
+    void addFromExcel(ActionEvent event) throws IOException, InvalidFormatException, SQLException {
+        int count = 0;
+        double prog = 0.0;
+
+        Connection connection = DataBaseConnection.getconncetion();
+        PreparedStatement ps ;
+        Sheet sheet;
+        FileChooser fileChooser = new FileChooser();
+
+        // Set the extension filter to only allow Excel files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Excel files (*.xlsx)", "*.xlsx");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+
+
+        // Show the file chooser dialog
+        File selectedFile = fileChooser.showOpenDialog(exportexcelbtn.getScene().getWindow());
+        progress.setVisible(true);
+
+        if (selectedFile != null) {
+
+            try {
+                // Read the selected Excel file
+                FileInputStream fis = new FileInputStream(selectedFile);
+                Workbook workbook = new XSSFWorkbook(fis);
+                sheet = workbook.getSheetAt(0);
+                for(Row row : sheet){
+                    //skip first row
+                    if(row.getRowNum() == 0){
+                        continue;
+                    }
+                    ps = connection.prepareStatement("INSERT INTO employe (id, employename, age, department, specialition , datemember, expyears, rating,  salary, active) VALUES (?,?,?,?,?,?,?,?,?,?)");
+                    ps.setInt(1, (int) row.getCell(0).getNumericCellValue());
+                    ps.setString(2,row.getCell(1).getStringCellValue());
+                    ps.setInt(3, (int) row.getCell(2).getNumericCellValue());
+                    //dep
+                    ps.setString(4,row.getCell(3).getStringCellValue());
+                    //spec
+                    ps.setString(5,row.getCell(4).getStringCellValue());
+                    //datemem
+                    ps.setDate(6, Date.valueOf(row.getCell(5).getStringCellValue()));
+                    //exyears
+                    ps.setInt(7, (int) row.getCell(6).getNumericCellValue());
+                    //rating
+                    ps.setDouble(8,row.getCell(7).getNumericCellValue());
+                    //salary
+                    ps.setInt(9, (int) row.getCell(8).getNumericCellValue());
+                    //active
+                    ps.setString(10,row.getCell(9).getStringCellValue());
+                    //check if there is an employe with the same id
+                    PreparedStatement pscheck = connection.prepareStatement("SELECT * FROM employe WHERE id = ?");
+                    pscheck.setInt(1, (int) row.getCell(0).getNumericCellValue());
+                    ResultSet res = pscheck.executeQuery();
+                    // if there is an employe with same id we skip
+                    if(res.next()){
+                        progress.setProgress(prog+=0.01);
+                        continue;
+                    }
+                    progress.setProgress(prog+=0.01);
+                    ps.executeUpdate();
+                    count++;
+
+
+                }
+                workbook.close();
+                dataonchart();
+                displaymaincar();
+                progress.setVisible(false);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("INFORMATION");
+                alert.setHeaderText(null);
+                alert.setContentText("Successfully Added " + count + " Employees" + ", Employees With Duplicated ids  are skipped");
+                alert.showAndWait();
+
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
+        ontypesearchup();
+        if(!addemplyeesearch.getText().isEmpty()){
+            char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
+            addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
+            addemplyeesearch.setText(addemplyeesearch.getText()+x);
+        }
+
     }
 
     //--------------------------------------this part is for Rating page---------------------------------------------------------------
@@ -1011,8 +1117,8 @@ public class DashboardController implements Initializable {
     ps.executeUpdate();
 
 
-    showemployessonratingtable(addEmployessdata());
-    showEmployessdata(addEmployessdata());
+    showemployessonratingtable(getEmployeesObservableListFromDatabase());
+    displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
     displaymaincar();
     ontypesearchup();
         if(!addemplyeesearch.getText().isEmpty()){
@@ -1039,7 +1145,7 @@ public class DashboardController implements Initializable {
             //2024-04-10 	2
             //2024-04-11 	1
             //chart
-            ps = connect.prepareStatement("SELECT datemember, COUNT(id) FROM employe WHERE department = ? GROUP BY datemember ORDER BY datemember ASC LIMIT 7; ");
+            ps = connect.prepareStatement("SELECT datemember, COUNT(id) FROM employe WHERE department = ? GROUP BY datemember ORDER BY datemember ASC LIMIT 10; ");
             ps.setString(1,Admin.div);
             XYChart.Series chart1 = new XYChart.Series<String,Integer>();
             queryres = ps.executeQuery();
@@ -1122,6 +1228,11 @@ public class DashboardController implements Initializable {
 
     }
     @FXML
+    void makefullscreen(MouseEvent event) {
+        Stage st = (Stage) fullscreen.getScene().getWindow();
+        st.setFullScreen(true);
+    }
+    @FXML
     void changeimage(MouseEvent event) throws SQLException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Please Choose An Image");
@@ -1180,10 +1291,10 @@ public class DashboardController implements Initializable {
 
         try {
             ontypesearchup();
-            showemployessonratingtable(addEmployessdata());
+            showemployessonratingtable(getEmployeesObservableListFromDatabase());
             displaymaincar();
             dataonchart();
-            showEmployessdata(addEmployessdata());
+            displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -1197,7 +1308,7 @@ public class DashboardController implements Initializable {
         combolist.add("All");
         seacrhcombo.setItems(combolist);
         seacrhcombo.getSelectionModel().selectLast();
-        homebtn.setStyle("-fx-background-color:#3b7dd4;");
+        homebtn.setStyle("-fx-background-color:#594e9c");
         usernamelabel.setText(Admin.adminname);
         usernamelabel1.setText(Admin.div);
 
