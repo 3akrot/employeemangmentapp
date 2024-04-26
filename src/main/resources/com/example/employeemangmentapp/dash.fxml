@@ -144,7 +144,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="addpage" layoutX="44.0" layoutY="27.0" prefHeight="644.0" prefWidth="891.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="addpage" layoutX="44.0" layoutY="27.0" prefHeight="644.0" prefWidth="891.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="286.0" layoutY="156.0" prefHeight="630.0" prefWidth="849.0" styleClass="page" stylesheets="@dash.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
@@ -266,7 +266,7 @@
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="hompage" prefHeight="623.0" prefWidth="855.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="hompage" prefHeight="623.0" prefWidth="855.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane prefHeight="511.0" prefWidth="772.0" styleClass="page" stylesheets="@dash.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
@@ -357,7 +357,12 @@
                            </children>
                         </AnchorPane>
                         <TextField fx:id="addemplyeesearch" layoutX="683.0" layoutY="14.0" prefHeight="25.0" prefWidth="258.0" promptText="Search" styleClass="textfield" stylesheets="@dash.css" translateY="-5.0" visible="false" />
-                        <ProgressBar fx:id="progress" focusTraversable="false" layoutX="270.0" layoutY="230.0" prefHeight="18.0" prefWidth="498.0" progress="0.0" visible="false" AnchorPane.leftAnchor="271.0" />
+                        <AnchorPane fx:id="loading" layoutX="275.0" layoutY="247.0" prefHeight="150.0" prefWidth="488.0" styleClass="textfield" stylesheets="@dash.css" visible="false" AnchorPane.leftAnchor="275.0" AnchorPane.topAnchor="247.0">
+                           <children>
+                              <ProgressBar fx:id="progress" focusTraversable="false" layoutX="12.0" layoutY="66.0" prefHeight="18.0" prefWidth="466.0" progress="0.0" AnchorPane.bottomAnchor="66.0" AnchorPane.leftAnchor="12.0" />
+                              <Label layoutX="197.0" layoutY="27.0" text="Adding Employes...." AnchorPane.topAnchor="27.0" />
+                           </children>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </center>

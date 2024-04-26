@@ -1,6 +1,7 @@
 package com.example.employeemangmentapp;
 
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -112,6 +113,8 @@ public class DashboardController implements Initializable {
     private Label addemplyeeid;
     @FXML
     private ProgressBar progress;
+    @FXML
+    private AnchorPane loading;
 
     @FXML
     private AnchorPane addemplyeeimage;
@@ -963,14 +966,14 @@ public class DashboardController implements Initializable {
         workbook.write(outputStream);
         workbook.close();
     }
+    File selectedFile;
+    int count = 0;
+    double prog = 0.0;
+    boolean over = false;
     @FXML
     void addFromExcel(ActionEvent event) throws IOException, InvalidFormatException, SQLException {
-        int count = 0;
-        double prog = 0.0;
 
-        Connection connection = DataBaseConnection.getconncetion();
-        PreparedStatement ps ;
-        Sheet sheet;
+
         FileChooser fileChooser = new FileChooser();
 
         // Set the extension filter to only allow Excel files
@@ -980,21 +983,49 @@ public class DashboardController implements Initializable {
 
 
         // Show the file chooser dialog
-        File selectedFile = fileChooser.showOpenDialog(exportexcelbtn.getScene().getWindow());
-        progress.setVisible(true);
+        selectedFile = fileChooser.showOpenDialog(exportexcelbtn.getScene().getWindow());
+        loading.setVisible(true);
 
         if (selectedFile != null) {
+            //run thread
+            addexcelthred x = new addexcelthred();
+            x.start();
 
+
+        }
+
+        displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
+        ontypesearchup();
+        if(!addemplyeesearch.getText().isEmpty()){
+            char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
+            addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
+            addemplyeesearch.setText(addemplyeesearch.getText()+x);
+        }
+
+
+
+
+    }
+    class addexcelthred extends Thread {
+        int excelrows;
+        int cuurentrow;
+        @Override
+        public void run(){
             try {
+                Connection connection = DataBaseConnection.getconncetion();
+                PreparedStatement ps ;
+                Sheet sheet;
                 // Read the selected Excel file
                 FileInputStream fis = new FileInputStream(selectedFile);
                 Workbook workbook = new XSSFWorkbook(fis);
                 sheet = workbook.getSheetAt(0);
+                excelrows = sheet.getLastRowNum() + 1;
                 for(Row row : sheet){
                     //skip first row
                     if(row.getRowNum() == 0){
                         continue;
                     }
+                    cuurentrow = row.getRowNum() +1;
                     ps = connection.prepareStatement("INSERT INTO employe (id, employename, age, department, specialition , datemember, expyears, rating,  salary, active) VALUES (?,?,?,?,?,?,?,?,?,?)");
                     ps.setInt(1, (int) row.getCell(0).getNumericCellValue());
                     ps.setString(2,row.getCell(1).getStringCellValue());
@@ -1019,39 +1050,53 @@ public class DashboardController implements Initializable {
                     ResultSet res = pscheck.executeQuery();
                     // if there is an employe with same id we skip
                     if(res.next()){
-                        progress.setProgress(prog+=0.01);
+                        progress.setProgress(prog = (double) cuurentrow / excelrows);
                         continue;
                     }
-                    progress.setProgress(prog+=0.01);
+                    progress.setProgress(prog = (double) cuurentrow / excelrows);
+                    System.out.println(ps);
                     ps.executeUpdate();
                     count++;
 
 
                 }
                 workbook.close();
-                dataonchart();
-                displaymaincar();
-                progress.setVisible(false);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("INFORMATION");
-                alert.setHeaderText(null);
-                alert.setContentText("Successfully Added " + count + " Employees" + ", Employees With Duplicated ids  are skipped");
-                alert.showAndWait();
+                Platform.runLater(()->{
+                    loading.setVisible(false);
+                    try {
+                        dataonchart();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    try {
+                        displaymaincar();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    progress.setProgress(0);
+
+                    try {
+                        showemployessonratingtable(getEmployeesObservableListFromDatabase());
+                        displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("INFORMATION");
+
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Added " + count + " Employees" + ", Employees With Duplicated ids  are skipped");
+                    alert.showAndWait();
+                    count = 0;                });
+
+
 
             }
             catch (Exception e){
                 e.printStackTrace();
             }
         }
-
-        displayEmployessdataonEmployessTable(getEmployeesObservableListFromDatabase());
-        ontypesearchup();
-        if(!addemplyeesearch.getText().isEmpty()){
-            char x = addemplyeesearch.getText().charAt(addemplyeesearch.getText().length() - 1);
-            addemplyeesearch.setText(addemplyeesearch.getText().substring(0,addemplyeesearch.getText().length() - 1));
-            addemplyeesearch.setText(addemplyeesearch.getText()+x);
-        }
-
     }
 
     //--------------------------------------this part is for Rating page---------------------------------------------------------------

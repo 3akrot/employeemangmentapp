@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.PasswordField?>
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeemangmentapp.LoginController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.employeemangmentapp.LoginController">
    <children>
-      <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0" styleClass="br-right" stylesheets="@login.css">
          <children>
             <AnchorPane prefHeight="400.0" prefWidth="300.0" styleClass="left-form" stylesheets="@login.css">
                <children>
@@ -23,7 +24,7 @@
                      </font>
                   </Label>
                </children></AnchorPane>
-            <AnchorPane layoutX="300.0" prefHeight="400.0" prefWidth="300.0" styleClass="right-form" stylesheets="@login.css">
+            <AnchorPane layoutX="300.0" prefHeight="400.0" prefWidth="300.0" stylesheets="@login.css">
                <children>
                   <Label layoutX="71.0" layoutY="54.0" text="Welcome Admin" textOverrun="CENTER_ELLIPSIS">
                      <font>
@@ -39,10 +40,14 @@
                      </graphic></Button>
                   <Button fx:id="Addnewmanger" layoutX="40.0" layoutY="298.0" mnemonicParsing="false" onAction="#switchtoadd" prefHeight="30.0" prefWidth="220.0" styleClass="login-btn" stylesheets="@login.css" text="Add new manger" />
                </children>
+               <styleClass>
+                  <String fx:value="right-form" />
+                  <String fx:value="br-right" />
+               </styleClass>
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="signup" prefHeight="200.0" prefWidth="200.0" visible="false">
+      <AnchorPane fx:id="signup" prefHeight="200.0" prefWidth="200.0" styleClass="br-left" stylesheets="@login.css" visible="false">
          <children>
             <AnchorPane prefHeight="400.0" prefWidth="300.0" styleClass="left-form" stylesheets="@login.css">
                <children>
@@ -71,7 +76,7 @@
                   </Button>
                   <ComboBox fx:id="dep" layoutX="67.0" layoutY="246.0" prefWidth="150.0" promptText="Choose Department" />
                   <Button fx:id="login11" layoutX="40.0" layoutY="327.0" mnemonicParsing="false" onAction="#switchtologin" prefHeight="30.0" prefWidth="220.0" styleClass="login-btn" stylesheets="@login.css" text="Back To Login" />
-                  <TextField fx:id="adminnameinp" layoutX="40.0" layoutY="104.0" prefHeight="30.0" prefWidth="220.0" promptText="Admin Name" />
+                  <TextField fx:id="adminnameinp" layoutX="40.0" layoutY="104.0" prefHeight="30.0" prefWidth="220.0" promptText="Admin Name" styleClass="textfield" />
                </children>
             </AnchorPane>
          </children>

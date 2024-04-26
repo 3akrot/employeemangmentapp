@@ -3,6 +3,12 @@
     -fx-border-color:#000;
     -fx-border-width:.4px 0px .4px .4px;
 }
+.br-left {
+-fx-background-radius:10px 0px 0px 10px;
+}
+.br-right{
+-fx-background-radius:0px 10px 10px 0px;
+}
 
 .right-form{
     -fx-background-color:#fff;
